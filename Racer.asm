@@ -11,8 +11,12 @@ STACK 0f500h
 
 FILE_NAME_IN  equ 'intropic.bmp'
 INTRO_NAME equ 'intropic.bmp'
-CONTROLS_NAME equ 'ctrlbutt.bmp'
 PLAYERS_NAME equ 'plrnames.bmp'
+RULES_NAME equ 'rules.bmp'
+RULES_PAGE_NAME equ 'rulepage.bmp'
+GAME_BUTTON_NAME equ 'gamebutt.bmp'
+TRACK_NAME equ 'track.bmp'
+
 
 BMP_WIDTH = 70
 BMP_HEIGHT = 70
@@ -33,12 +37,18 @@ DATASEG
 	Palette 	db 400h dup (0)
 
 	IntroName db INTRO_NAME, 0
-	ControlsName db CONTROLS_NAME, 0
 	PlayersName db PLAYERS_NAME, 0
-	
+	RulesName db RULES_NAME, 0
+	RulesPageName db RULES_PAGE_NAME, 0
+	GameButtonName db GAME_BUTTON_NAME, 0
+	TrackName db TRACK_NAME, 0
+
 	IntroHandle dw ?
-	ControlsHandle dw ?
 	PlayersNamesHandle dw ?
+	RulesHandle dw ?
+	RulesPageHandle dw ?
+	GameButtonHandle dw ?
+	TrackHandle dw ?
 	
 
 
@@ -60,17 +70,27 @@ DATASEG
 	BmpRowSize dw ?
 	
 
-	Matrix1 db   4, 4, 4, 4, 4, 4 
-	        db   4, 4, 4, 4, 4, 4
- 	        db   4, 4, 6, 6, 6, 4
- 	        db   4, 4, 6, 7, 6, 4
- 	        db   4, 4, 6, 6, 6, 4
- 	        db   4, 4, 4, 4, 4, 4
-            db   4, 4, 4, 4, 4, 4   
+	FirstPlayerBlueCar db   20h, 20h, 20h, 20h, 20h, 20h 
+	        		   db   20h, 09h, 09h, 09h, 09h, 20h
+ 	        		   db   20h, 09h, 09h, 09h, 09h, 20h
+ 	        		   db   20h, 09h, 09h, 09h, 09h, 20h
+ 	        		   db   20h, 09h, 09h, 09h, 09h, 20h
+ 	        		   db   20h, 20h, 20h, 20h, 20h, 20h
+					   
+	FinishLine		   db 	0Fh, 00h, 0Fh, 00h, 0Fh, 00h, 0Fh, 00h
+					   db 	00h, 0Fh, 00h, 0Fh, 00h, 0Fh, 00h, 0Fh
 	
 	matrix dw ?
 
 	GotClick db ?
+	;-------Press any key to continue-------
+	PressToContinueNotification db 'Press Any Key To Continue...$'
+	
+	;-------Player Inputs-------
+	FirstPlayerInputNotification db 'enter player one:$'
+	FirstPlayerName db 'XX123456X'
+	SecondPlayerInputNotification db 'enter player two:$'
+	SecondPlayerName db 'XX123456X'
 CODESEG
 
 
@@ -88,23 +108,58 @@ start:
 	call IfError
 
 cont1:
-	call ShowButtonToControls
+	call ShowContinueNotificationToNames
+	call WaitForButtonToBePressed
+
+	call ShowPlayersNamesScreen
 	cmp [ErrorFile],1
 	jne cont2
 	call IfError
 
 cont2:
-	call WaitForStartButtonToControls
+	call PrintPlayerOneInputNotification
+	call FirstPlayerInputName
 	
-	call ShowPlayersNamesScreen
+	call PrintPlayerTwoInputNotification
+	call SecondPlayerInputName
+	
+	call ShowRulesButton
 	cmp [ErrorFile],1
 	jne cont3
-	call IFERROR
+	call IfError
 
 cont3:
-	jmp cont3
+	call WaitForButtonToRules
 	
+	call ShowRulesScreen
+	cmp [ErrorFile],1
+	jne cont4
+	call IfError
+
+cont4:
+	call ShowGameButton
+	cmp [ErrorFile],1
+	jne cont5
+	call IfError
+
+cont5:
+	call WaitForButtonToGame
+
+	call ShowTrackScreen
+	cmp [ErrorFile],1
+	jne cont6
+	call IfError
+
+cont6:
+	call ShowFinishLine
+
+	call ShowBlueCar
+
 exit:
+	xor ah, ah
+	int 16h
+	mov ah, 1
+	int 16h
 	
 	mov ax,2
 	int 10h
@@ -121,22 +176,14 @@ exit:
 ;==========================
 ;==========================
 
-;===============================================
-;====IfError- error message for bmp files=======
-;===============================================
-proc IfError near
-	mov dx, offset BmpFileErrorMsg
-	mov ah, 9
-	int 21h
-EndlessLoop:
-	jmp Endlessloop
-	ret
-endp IfError
 
 ;===============================================
 ;====ShowMainIntro- shows start picture=========
 ;===============================================
 proc ShowMainIntro near
+	push dx
+	push ax
+
 	mov dx, offset IntroName
 	mov [BmpLeft],0
 	mov [BmpTop],0
@@ -147,42 +194,61 @@ proc ShowMainIntro near
 	mov ax, [FileHandle]
 	mov [introhandle], ax
 
+	pop ax
+	pop dx
+
 	ret
 endp ShowMainIntro
 
-;=================================================================
-;====ShowButtonToControls- shows button to Controls panel=========
-;=================================================================
-proc ShowButtonToControls near
-	mov dx, offset ControlsName
-	mov [BmpLeft],0
-	mov [BmpTop],0
-	mov [BmpColSize], 60
-	mov [BmpRowSize] ,60
 
-	call OpenShowBmp
-	mov ax, [FileHandle]
-	mov [controlshandle], ax
+;===========================================================================================
+;====ShowContinueNotificationToNames- show notification to continue to names screen=========
+;===========================================================================================
+proc ShowContinueNotificationToNames near
+	push dx
+	push bx
+	push ax
 
-	ret
-endp ShowButtonToControls
+	mov dh, 23
+	mov dl, 6
+	xor bh, bh
+	mov ah, 2
+	int 10h
 
-;===============================================================================
-;====WaitForStartButtonToControls- waits for user to click first button=========
-;===============================================================================
-proc WaitForStartButtonToControls near
-	mov [xclick], 0
-	mov [yclick], 0
-	mov [squaresize], 60
-	call waittillgotclickonsomepoint
+	mov dx, offset PressToContinueNotification
+	mov ah, 9
+	int 21h
+
+	pop ax
+	pop bx
+	pop dx
 
 	ret
-endp WaitForStartButtonToControls
+endp ShowContinueNotificationToNames
+
+
+;=======================================================================
+;====WaitForButtonToBePressed- waits for any button to be pressed=======
+;=======================================================================
+proc WaitForButtonToBePressed near
+	push ax
+
+	xor ah, ah
+	int 16h
+
+	pop ax
+
+	ret
+endp WaitForButtonToBePressed
+
 
 ;========================================================================
 ;====ShowPlayersNamesScreen- shows the screen for player's names=========
 ;========================================================================
 proc ShowPlayersNamesScreen near
+	push dx
+	push ax
+
 	mov dx, offset PlayersName
 	mov [BmpLeft],0
 	mov [BmpTop],0
@@ -192,8 +258,305 @@ proc ShowPlayersNamesScreen near
 	call OpenShowBmp
 	mov ax, [FileHandle]
 	mov [PlayersNamesHandle], ax
+	
+	pop ax
+	pop dx
+	
 	ret
 endp ShowPlayersNamesScreen
+
+;======================================================================================
+;====PrintPlayerOneInputNotification- prints input notification for first player=======
+;======================================================================================
+proc PrintPlayerOneInputNotification near
+	push dx
+	push bx
+	push ax
+	
+	mov dh, 8
+	mov dl, 0
+	xor bh, bh
+	mov ah, 2
+	int 10h
+
+	mov dx, offset FirstPlayerInputNotification
+	mov ah, 9
+	int 21h
+	
+	pop ax
+	pop bx
+	pop dx
+
+	ret
+endp PrintPlayerOneInputNotification
+
+
+;==========================================================================
+;====FirstPlayerInputName- takes input notification for first player======
+;==========================================================================
+proc FirstPlayerInputName near
+	push dx
+	push bx
+	push ax
+
+	mov dh, 10
+	mov dl, 0
+	xor bh, bh
+	mov ah, 2
+	int 10h
+	
+	mov [byte FirstPlayerName], 7
+	mov dx, offset FirstPlayerName
+	mov ah, 0Ah
+	int 21h
+	
+	pop ax
+	pop bx
+	pop dx
+
+	ret
+endp FirstPlayerInputName
+
+
+;======================================================================================
+;====PrintPlayerTwoInputNotification- prints input notification for second player======
+;======================================================================================
+proc PrintPlayerTwoInputNotification near
+	push dx
+	push bx
+	push ax
+	
+	mov dh, 8
+	mov dl, 21
+	xor bh, bh
+	mov ah, 2
+	int 10h
+
+	mov dx, offset SecondPlayerInputNotification
+	mov ah, 9
+	int 21h
+	
+	pop ax
+	pop bx
+	pop dx
+
+	ret
+endp PrintPlayerTwoInputNotification
+
+;==========================================================================
+;====SecondPlayerInputName- takes input notification for second player======
+;==========================================================================
+proc SecondPlayerInputName near
+	push dx
+	push bx
+	push ax
+
+	mov dh, 10
+	mov dl, 21
+	xor bh, bh
+	mov ah, 2
+	int 10h
+	
+	mov [byte SecondPlayerName], 7
+	mov dx, offset SecondPlayerName
+	mov ah, 0Ah
+	int 21h
+	
+	pop ax
+	pop bx
+	pop dx
+
+	ret
+endp SecondPlayerInputName
+
+
+;===============================================
+;====IfError- error message for bmp files=======
+;===============================================
+proc IfError near
+	push dx
+	push ax
+
+	mov dx, offset BmpFileErrorMsg
+	mov ah, 9
+	int 21h
+EndlessLoop:
+	jmp Endlessloop
+
+	pop ax
+	pop dx
+
+	ret
+endp IfError
+
+;=======================================================
+;====ShowRulesButton- shows the button for rules========
+;=======================================================
+proc ShowRulesButton near
+	push dx
+	push ax
+
+	mov dx, offset RulesName
+	mov [BmpLeft],260
+	mov [BmpTop],140
+	mov [BmpColSize], 60
+	mov [BmpRowSize], 60
+
+	call OpenShowBmp
+	mov ax, [FileHandle]
+	mov [RulesHandle], ax
+	
+	pop ax
+	pop dx
+	
+	ret
+endp ShowRulesButton
+
+;=================================================================================
+;====WaitForButtonToRules- waits for user to click button to rules screen=========
+;=================================================================================
+proc WaitForButtonToRules near
+	mov [Xclick], 290
+	mov [Yclick], 170
+	mov [squaresize], 30
+	call waittillgotclickonsomepoint
+
+	ret
+endp WaitForButtonToRules
+
+;=================================================================================
+;====ShowRulesScreen- shows screen with rules=========
+;=================================================================================
+proc ShowRulesScreen near
+	push dx
+	push ax
+
+	mov dx, offset RulesPageName
+	mov [BmpLeft],0
+	mov [BmpTop],0
+	mov [BmpColSize], 320
+	mov [BmpRowSize] ,200
+
+	call OpenShowBmp
+	mov ax, [FileHandle]
+	mov [RulesPageHandle], ax
+
+	pop ax
+	pop dx
+	
+	ret
+endp ShowRulesScreen
+
+
+;=======================================================
+;====ShowGameButton- shows the button for game==========
+;=======================================================
+proc ShowGameButton near
+	push dx
+	push ax
+
+	mov dx, offset GameButtonName
+	mov [BmpLeft],270
+	mov [BmpTop],150
+	mov [BmpColSize], 50
+	mov [BmpRowSize], 50
+
+	call OpenShowBmp
+	mov ax, [FileHandle]
+	mov [GameButtonHandle], ax
+	
+	pop ax
+	pop dx
+	
+	ret
+endp ShowGameButton
+
+;===============================================================================
+;====WaitForButtonToGame- waits for user to click button to game screen=========
+;===============================================================================
+proc WaitForButtonToGame near
+	mov [Xclick], 295
+	mov [Yclick], 175
+	mov [squaresize], 25
+	call waittillgotclickonsomepoint
+
+	ret
+endp WaitForButtonToGame
+
+;===============================================================
+;====ShowTrackScreen- shows the main track for the race=========
+;===============================================================
+proc ShowTrackScreen near
+	push dx
+	push ax
+
+	mov dx, offset TrackName
+	mov [BmpLeft],0
+	mov [BmpTop],0
+	mov [BmpColSize], 320
+	mov [BmpRowSize], 200
+
+	call OpenShowBmp
+	mov ax, [FileHandle]
+	mov [TrackHandle], ax
+	
+	pop ax
+	pop dx
+	
+	ret
+endp ShowTrackScreen
+
+;==================================================
+;====ShowFinishLine- shows the finish line=========
+;==================================================
+proc ShowFinishLine near
+	push di
+	push cx
+	push dx	
+
+	mov di, 0CE80H
+	lea cx, [FinishLine]
+	mov [matrix] ,cx
+	  
+	mov dx, 8   ; cols
+	mov cx, 2  ;rows
+	 
+	call putMatrixInScreen
+
+	pop dx
+	pop cx
+	pop di
+
+	ret
+endp ShowFinishLine
+
+
+;=========================================================
+;====ShowBlueCar- shows blue car for first player=========
+;=========================================================
+proc ShowBlueCar near
+	push di
+	push cx
+	push dx	
+
+	mov di, 0DE80H
+	lea cx, [FirstPlayerBlueCar]
+	mov [matrix] ,cx
+	  
+	mov dx, 6   ; cols
+	mov cx, 6  ;rows
+	 
+	call putMatrixInScreen
+
+	pop dx
+	pop cx
+	pop di
+
+	ret
+endp ShowBlueCar
+
+
+
 
 
 
@@ -595,8 +958,6 @@ WaitTillPressOnPoint:
 
  	
 	shr cx,1
-	cmp cx,250
-	ja ClickForExit
 	mov si, cx 
 	add si, [SquareSize]
 	cmp si , [Xclick]
