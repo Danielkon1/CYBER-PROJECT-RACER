@@ -16,7 +16,7 @@ RULES_NAME equ 'rules.bmp'
 RULES_PAGE_NAME equ 'rulepage.bmp'
 GAME_BUTTON_NAME equ 'gamebutt.bmp'
 TRACK_NAME equ 'track.bmp'
-
+END_ROAD_NAME equ 'endroad.bmp'
 
 BMP_WIDTH = 70
 BMP_HEIGHT = 70
@@ -42,6 +42,7 @@ DATASEG
 	RulesPageName db RULES_PAGE_NAME, 0
 	GameButtonName db GAME_BUTTON_NAME, 0
 	TrackName db TRACK_NAME, 0
+	EndRoadName db END_ROAD_NAME, 0
 
 	IntroHandle dw ?
 	PlayersNamesHandle dw ?
@@ -49,6 +50,7 @@ DATASEG
 	RulesPageHandle dw ?
 	GameButtonHandle dw ?
 	TrackHandle dw ?
+	EndRoadHandle dw ?
 	
 
 
@@ -68,18 +70,30 @@ DATASEG
 	BmpTop dw ?
 	BmpColSize dw ?
 	BmpRowSize dw ?
-	
 
-	FirstPlayerBlueCar db   20h, 20h, 20h, 20h, 20h, 20h 
-	        		   db   20h, 09h, 09h, 09h, 09h, 20h
- 	        		   db   20h, 09h, 09h, 09h, 09h, 20h
- 	        		   db   20h, 09h, 09h, 09h, 09h, 20h
- 	        		   db   20h, 09h, 09h, 09h, 09h, 20h
- 	        		   db   20h, 20h, 20h, 20h, 20h, 20h
+;black -0h
+;yellow- 3h
+;blue -4h
+;purple -5h
+;teal -6h
+;white -7h
+;different white -8h
+;light blue -9h
+;green -10h
+;navy green -11h
+;khaki -12h
+;brown -13h
+;light brown -14h
+;orange -17h
+	YellowCar 	db   0h, 0h, 0h, 0h, 0h, 0h, 0h, 0h, 0h, 0h 
+				db   0h, 3h, 3h, 3h, 3h, 3h, 0h, 6h, 6h, 0h
+				db   0h, 3h, 3h, 3h, 3h, 3h, 3h, 0h, 6h, 0h
+				db   0h, 3h, 3h, 3h, 3h, 3h, 3h, 3h, 0h, 0h
+				db   0h, 3h, 3h, 3h, 3h, 3h, 3h, 3h, 3h, 0h
+				db   0h, 0h, 0h, 0h, 0h, 0h, 0h, 0h, 0h, 0h
 					   
-	FinishLine		   db 	0Fh, 00h, 0Fh, 00h, 0Fh, 00h, 0Fh, 00h
-					   db 	00h, 0Fh, 00h, 0Fh, 00h, 0Fh, 00h, 0Fh
-	
+
+
 	matrix dw ?
 
 	GotClick db ?
@@ -101,7 +115,7 @@ start:
 	mov ds, ax
 
 	call SetGraphic
-
+		
 	call ShowMainIntro
 	cmp [ErrorFile],1
 	jne cont1
@@ -151,9 +165,13 @@ cont5:
 	call IfError
 
 cont6:
-	call ShowFinishLine
 
-	call ShowBlueCar
+	call ShowYellowCar
+
+	mov cx, 1
+	mov dx, 1
+	mov ah, 0Dh
+	int 10h
 
 exit:
 	xor ah, ah
@@ -490,7 +508,7 @@ proc ShowTrackScreen near
 	push dx
 	push ax
 
-	mov dx, offset TrackName
+	mov dx, offset EndRoadName
 	mov [BmpLeft],0
 	mov [BmpTop],0
 	mov [BmpColSize], 320
@@ -498,7 +516,7 @@ proc ShowTrackScreen near
 
 	call OpenShowBmp
 	mov ax, [FileHandle]
-	mov [TrackHandle], ax
+	mov [EndRoadHandle], ax
 	
 	pop ax
 	pop dx
@@ -506,44 +524,19 @@ proc ShowTrackScreen near
 	ret
 endp ShowTrackScreen
 
-;==================================================
-;====ShowFinishLine- shows the finish line=========
-;==================================================
-proc ShowFinishLine near
+;=========================================================
+;====ShowYellowCar- shows blue car for first player=========
+;=========================================================
+proc ShowYellowCar near
 	push di
 	push cx
 	push dx	
 
-	mov di, 0CE80H
-	lea cx, [FinishLine]
+	mov di, 0A000H
+	lea cx, [YellowCar]
 	mov [matrix] ,cx
 	  
-	mov dx, 8   ; cols
-	mov cx, 2  ;rows
-	 
-	call putMatrixInScreen
-
-	pop dx
-	pop cx
-	pop di
-
-	ret
-endp ShowFinishLine
-
-
-;=========================================================
-;====ShowBlueCar- shows blue car for first player=========
-;=========================================================
-proc ShowBlueCar near
-	push di
-	push cx
-	push dx	
-
-	mov di, 0DE80H
-	lea cx, [FirstPlayerBlueCar]
-	mov [matrix] ,cx
-	  
-	mov dx, 6   ; cols
+	mov dx, 10   ; cols
 	mov cx, 6  ;rows
 	 
 	call putMatrixInScreen
@@ -553,7 +546,7 @@ proc ShowBlueCar near
 	pop di
 
 	ret
-endp ShowBlueCar
+endp ShowYellowCar
 
 
 
