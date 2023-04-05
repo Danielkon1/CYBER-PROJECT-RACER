@@ -91,6 +91,17 @@ DATASEG
 				db   0h, 3h, 3h, 3h, 3h, 3h, 3h, 3h, 0h, 0h
 				db   0h, 3h, 3h, 3h, 3h, 3h, 3h, 3h, 3h, 0h
 				db   0h, 0h, 0h, 0h, 0h, 0h, 0h, 0h, 0h, 0h
+			
+	Background	db	 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h
+				db	 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h
+				db	 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h
+				db	 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h
+				db	 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h
+				db	 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h
+				db	 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h
+				db	 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h
+				db	 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h
+				db	 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h
 					   
 
 
@@ -115,6 +126,38 @@ start:
 	mov ds, ax
 
 	call SetGraphic
+
+	xor di, di
+	mov cx, 2
+colorloop1:
+	push cx
+
+		mov cx, 16
+	colorloop:
+		push cx
+
+		lea cx, [Background]
+		mov [matrix] ,cx
+		
+		mov dx, 20   ; cols
+		mov cx, 10   ;rows
+		
+		push di
+		call putMatrixInScreen
+		pop di
+		add di, 20
+		pop cx
+		loop colorloop
+
+	mov di, 3200
+	pop cx
+	loop colorloop1
+
+	xor ah, ah
+	int 16h
+	mov ah, 1
+	int 16h
+	
 		
 	call ShowMainIntro
 	cmp [ErrorFile],1
@@ -508,7 +551,7 @@ proc ShowTrackScreen near
 	push dx
 	push ax
 
-	mov dx, offset EndRoadName
+	mov dx, offset TrackName
 	mov [BmpLeft],0
 	mov [BmpTop],0
 	mov [BmpColSize], 320
@@ -516,7 +559,7 @@ proc ShowTrackScreen near
 
 	call OpenShowBmp
 	mov ax, [FileHandle]
-	mov [EndRoadHandle], ax
+	mov [TrackHandle], ax
 	
 	pop ax
 	pop dx
