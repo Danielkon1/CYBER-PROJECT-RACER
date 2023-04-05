@@ -116,6 +116,12 @@ DATASEG
 	FirstPlayerName db 'XX123456X'
 	SecondPlayerInputNotification db 'enter player two:$'
 	SecondPlayerName db 'XX123456X'
+
+	;-------Draw Any Line Points-------
+	P1X dw ?
+	P1Y dw ?
+	P2X dw ?
+	P2Y dw ?
 CODESEG
 
 
@@ -127,37 +133,43 @@ start:
 
 	call SetGraphic
 
-	xor di, di
-	mov cx, 2
-colorloop1:
-	push cx
-
-		mov cx, 16
-	colorloop:
-		push cx
-
-		lea cx, [Background]
-		mov [matrix] ,cx
-		
-		mov dx, 20   ; cols
-		mov cx, 10   ;rows
-		
-		push di
-		call putMatrixInScreen
-		pop di
-		add di, 20
-		pop cx
-		loop colorloop
-
-	mov di, 3200
-	pop cx
-	loop colorloop1
+;	xor di, di
+;	mov cx, 2
+;colorloop1:
+;	push cx
+;
+;		mov cx, 16
+;	colorloop:
+;		push cx
+;
+;		lea cx, [Background]
+;		mov [matrix] ,cx
+;		
+;		mov dx, 20   ; cols
+;		mov cx, 10   ;rows
+;		
+;		push di
+;		call putMatrixInScreen
+;		pop di
+;		add di, 20
+;		pop cx
+;		loop colorloop
+;
+;	mov di, 3200
+;	pop cx
+;	loop colorloop1
+;
+	mov si, -50
+	mov al, 6
+	mov cx, 10
+	mov dx, 150
+	call DrawVerticalLine
 
 	xor ah, ah
 	int 16h
 	mov ah, 1
 	int 16h
-	
+
 		
 	call ShowMainIntro
 	cmp [ErrorFile],1
@@ -592,7 +604,32 @@ proc ShowYellowCar near
 endp ShowYellowCar
 
 
+proc DrawAnyLine near
+	push ax
+	push bx
+	push si
+	push cx
+	push dx
 
+	mov ax, [P1X]
+	mov bx, [P2X]
+	cmp ax, bx
+	jne ContDrawLine1
+
+	mov si, [P2Y]
+	sub si, [P1Y]
+	mov cx, [P1X]
+	mov dx, [P1Y]
+	call DrawVerticalLine
+
+ContDrawLine1:
+	mov ax, [P1Y]
+	mov bx, [P2Y]
+	cmp ax, bx
+	
+
+	ret
+endp DrawAnyLine
 
 
 
@@ -728,6 +765,12 @@ endp CopyBmpPalette
 proc DrawHorizontalLine	near
 	push si
 	push cx
+
+	cmp si, 0
+	jge DrawLine
+	neg si
+	sub cx, si
+
 DrawLine:
 	cmp si,0
 	jz ExitDrawLine	
@@ -753,6 +796,11 @@ proc DrawVerticalLine	near
 	push si
 	push dx
  
+	cmp si, 0
+	jge DrawVertical
+	neg si
+	sub dx, si
+
 DrawVertical:
 	cmp si,0
 	jz @@ExitDrawLine	
