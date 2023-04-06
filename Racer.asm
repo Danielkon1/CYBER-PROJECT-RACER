@@ -126,7 +126,14 @@ DATASEG
 	DeltaX dw ?
 	DeltaY dw ?
 
+	XMove dw ?
+	YMove dw ?
+	DrawX dw ?
+	DrawY dw ?
+
 	ValueToAbsolute dw ?
+
+	LineFillColor db ?
 CODESEG
 
 
@@ -138,37 +145,14 @@ start:
 
 	call SetGraphic
 
-;	xor di, di
-;	mov cx, 2
-;colorloop1:
-;	push cx
-;
-;		mov cx, 16
-;	colorloop:
-;		push cx
-;
-;		lea cx, [Background]
-;		mov [matrix] ,cx
-;		
-;		mov dx, 20   ; cols
-;		mov cx, 10   ;rows
-;		
-;		push di
-;		call putMatrixInScreen
-;		pop di
-;		add di, 20
-;		pop cx
-;		loop colorloop
-;
-;	mov di, 3200
-;	pop cx
-;	loop colorloop1
-;
-	mov cx, 7
 	mov [P1X], 10
-	mov [p1y], 10
-	mov [p2x], 80
-	mov [p2y], 10
+	mov [P1Y], 10
+
+	mov [P2X], 200
+	mov [P2Y], 120
+
+	mov [LINEFILLCOLOR], 9
+
 	call DrawAnyLine
 
 	xor ah, ah
@@ -609,7 +593,9 @@ proc ShowYellowCar near
 	ret
 endp ShowYellowCar
 
-
+;=========================================================
+;====DrawAnyLine- shows a line by using any 2 points======
+;=========================================================
 proc DrawAnyLine near
 	push ax
 	push bx
@@ -627,6 +613,7 @@ proc DrawAnyLine near
 	mov cx, [P1X]
 	mov dx, [P1Y]
 	call DrawVerticalLine
+	jmp EndSpecialLine
 
 ContDrawLine1:
 	mov ax, [P1Y]
@@ -639,6 +626,7 @@ ContDrawLine1:
 	mov cx, [P1X]
 	mov dx, [P1Y]
 	call DrawHorizontalLine
+	jmp EndSpecialLine
 
 ContDrawLine2:
 	mov ax, [P2X]
@@ -649,7 +637,95 @@ ContDrawLine2:
 	sub ax, [P1Y]
 	mov [DeltaY], ax
 
+	mov [ValueToAbsolute], ax
+	call AbsoluteValue
+	mov bx, [ValueToAbsolute]
+
+	mov ax, [DeltaX]
+	mov [ValueToAbsolute], ax
+	call AbsoluteValue
+	mov cx, [ValueToAbsolute]
 	
+	cmp cx, bx
+	jne ContDrawLine3
+
+	call DrawDiagonalLine
+	jmp EndSpecialLine
+
+ContDrawLine3:
+	cmp [DeltaX], 0
+	jg DeltaXLargerThan0
+	dec [DeltaX]
+	jmp ContDrawLine4
+
+DeltaXLargerThan0:
+	inc [DeltaX]
+
+ContDrawLine4:
+	cmp [DeltaY], 0
+	jg DeltaYLargerThan0
+	dec [DeltaY]
+	jmp ContDrawLine5
+
+DeltaYLargerThan0:
+	inc [DeltaY]
+
+ContDrawLine5:
+	cmp cx, bx
+	jl DeltaXIsSmallerThanDeltaY
+
+	mov ax, [DeltaX]
+	mov bx, [DeltaY]
+	div bx
+
+	mov si, ax
+	mov al, [LineFillColor]
+	mov cx, [P1X]
+	mov dx, [P1Y]
+	call DrawHorizontalLine
+
+	neg si
+	mov cx, [P2X]
+	mov dx, [P2Y]
+	call DrawHorizontalLine
+	
+	add [P2X], si
+	dec [P2Y]
+
+	neg si
+	add [P1X], si
+	inc [P1Y]
+
+	call DrawAnyLine
+	jmp EndSpecialLine
+
+DeltaXIsSmallerThanDeltaY:
+	mov ax, [DeltaY]
+	mov bx, [DeltaX]
+	div bx
+
+	mov si, ax
+	mov al, [LineFillColor]
+	mov cx, [P1X]
+	mov dx, [P1Y]
+	call DrawVerticalLine
+
+	neg si
+	mov cx, [P2X]
+	mov dx, [P2Y]
+	call DrawVerticalLine
+
+	add [P2Y], si
+	dec [P2X]
+
+	neg si
+	add [P1Y], si
+	inc [P1X]
+
+	call DrawAnyLine
+	
+	
+EndSpecialLine:
 	pop dx
 	pop cx
 	pop si
@@ -659,7 +735,67 @@ ContDrawLine2:
 	ret
 endp DrawAnyLine
 
+;=========================================================
+;====DrawDiagonalLine- draws a diagonal line==============
+;=========================================================
+proc DrawDiagonalLine near
+	push cx
+	push dx
+	push di
+	push bp
+	push cx
 
+	cmp [DeltaX], 0
+    jl NegDeltaX
+    mov [XMove], 1
+    jmp ContDrawDiagonal1
+
+NegDeltaX:
+    mov [XMove], -1
+
+ContDrawDiagonal1:
+    cmp [DeltaY], 0
+    jl NegDeltaY
+    mov [YMove], 1
+    jmp ContDrawDiagonal2
+
+NegDeltaY:
+    mov [YMove], -1
+
+ContDrawDiagonal2:
+    mov cx, [P1X]
+    mov dx, [P1Y]
+
+    mov di, [XMove]
+    mov bp, [YMove]
+
+	mov al, [LineFillColor]
+	mov ah, 0Ch
+ContDrawDiagonal3:
+    cmp cx, [P2X]
+    je EndDiagonalLine
+
+    int 10h
+
+    add cx, di
+    add dx, bp
+
+    jmp ContDrawDiagonal3
+
+EndDiagonalLine:
+	pop cx
+	pop bp
+	pop di
+	pop dx
+	pop cx
+
+    ret
+endp DrawDiagonalLine
+
+
+;=================================================================
+;====AbsoluteValue- calculates absolute value of a number=========
+;=================================================================
 proc AbsoluteValue near
 	push ax
 	push bx
@@ -675,8 +811,8 @@ proc AbsoluteValue near
 
 ContAbsolute:
 
-	pop ax
 	pop bx
+	pop ax
 
 	ret
 endp AbsoluteValue
@@ -824,7 +960,8 @@ proc DrawHorizontalLine	near
 DrawLine:
 	cmp si,0
 	jz ExitDrawLine	
-	 
+
+	mov al, [LineFillColor] 
     mov ah,0ch	
 	int 10h    ; put pixel
 	 
@@ -855,6 +992,7 @@ DrawVertical:
 	cmp si,0
 	jz @@ExitDrawLine	
 	 
+	mov al, [LineFillColor]
     mov ah,0ch	
 	int 10h    ; put pixel
 	
