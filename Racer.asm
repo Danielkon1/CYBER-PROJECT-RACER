@@ -122,6 +122,11 @@ DATASEG
 	P1Y dw ?
 	P2X dw ?
 	P2Y dw ?
+
+	DeltaX dw ?
+	DeltaY dw ?
+
+	ValueToAbsolute dw ?
 CODESEG
 
 
@@ -159,11 +164,12 @@ start:
 ;	pop cx
 ;	loop colorloop1
 ;
-	mov si, -50
-	mov al, 6
-	mov cx, 10
-	mov dx, 150
-	call DrawVerticalLine
+	mov cx, 7
+	mov [P1X], 10
+	mov [p1y], 10
+	mov [p2x], 80
+	mov [p2y], 10
+	call DrawAnyLine
 
 	xor ah, ah
 	int 16h
@@ -626,10 +632,54 @@ ContDrawLine1:
 	mov ax, [P1Y]
 	mov bx, [P2Y]
 	cmp ax, bx
+	jne ContDrawLine2
+
+	mov si, [P2X]
+	sub si, [P1X]
+	mov cx, [P1X]
+	mov dx, [P1Y]
+	call DrawHorizontalLine
+
+ContDrawLine2:
+	mov ax, [P2X]
+	sub ax, [P1X]
+	mov [DeltaX], ax
+
+	mov ax, [P2Y]
+	sub ax, [P1Y]
+	mov [DeltaY], ax
+
 	
+	pop dx
+	pop cx
+	pop si
+	pop bx
+	pop ax
 
 	ret
 endp DrawAnyLine
+
+
+proc AbsoluteValue near
+	push ax
+	push bx
+
+	mov bx, [ValueToAbsolute]
+	cmp bx, 0
+	jge ContAbsolute
+
+	mov ax, -1
+	mul bx
+
+	mov [ValueToAbsolute], ax
+
+ContAbsolute:
+
+	pop ax
+	pop bx
+
+	ret
+endp AbsoluteValue
 
 
 
