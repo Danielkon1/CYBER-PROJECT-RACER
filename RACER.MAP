@@ -1,9 +1,9 @@
+Error: Group DGROUP exceeds 64K
 
  Start  Stop   Length Name               Class
 
- 00000H 00625H 00626H _TEXT              CODE
- 00630H 00D01H 006D2H _DATA              DATA
- 00D10H 1020FH 0F500H STACK              STACK
+ 00000H 00751H 00752H _TEXT              CODE
+ 00760H 012C1H 00B62H _DATA              DATA
+ 012D0H 10824H 0F555H STACK              STACK
 
-Program entry point at 0000:0000
 

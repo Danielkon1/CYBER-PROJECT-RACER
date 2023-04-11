@@ -7,7 +7,7 @@ MACRO PUT_CHAR   MY_CHAR
 	int 21h
 ENDM 
 
-STACK 0f500h
+STACK 0f555h
 
 FILE_NAME_IN  equ 'intropic.bmp'
 INTRO_NAME equ 'intropic.bmp'
@@ -81,29 +81,91 @@ DATASEG
 ;light blue -9h
 ;green -10h
 ;navy green -11h
-;khaki -12h
+;khaki -12
 ;brown -13h
-;light brown -14h
-;orange -17h
-	YellowCar 	db   0h, 0h, 0h, 0h, 0h, 0h, 0h, 0h, 0h, 0h 
-				db   0h, 3h, 3h, 3h, 3h, 3h, 0h, 6h, 6h, 0h
-				db   0h, 3h, 3h, 3h, 3h, 3h, 3h, 0h, 6h, 0h
-				db   0h, 3h, 3h, 3h, 3h, 3h, 3h, 3h, 0h, 0h
-				db   0h, 3h, 3h, 3h, 3h, 3h, 3h, 3h, 3h, 0h
-				db   0h, 0h, 0h, 0h, 0h, 0h, 0h, 0h, 0h, 0h
-			
-	Background	db	 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h
-				db	 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h
-				db	 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h
-				db	 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h
-				db	 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h
-				db	 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h
-				db	 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h
-				db	 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h
-				db	 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h
-				db	 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h, 02h
-					   
+;light brown -14
+;orange -17
+	FirstPlayerCar 			db   00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h
+							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h, 06h, 06h, 06h, 06h, 00h
+							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h, 06h, 06h, 06h, 00h
+							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h, 06h, 06h, 00h
+							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h, 06h, 00h
+							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h, 00h
+							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h
+							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h
+							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h
+							db   00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h
+							db	 03h, 03h, 00h, 06h, 06h, 06h, 00h, 03h, 03h, 03h, 03h, 00h, 06h, 06h, 06h, 00h, 03h, 03h
+							db	 03h, 03h, 03h, 00h, 06h, 00h, 03h, 03h, 03h, 03h, 03h, 03h, 00h, 06h, 00h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 00h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 00h, 03h, 03h, 03h, 03h
 
+
+	VerticalRedTrack30		db	 01h
+							db	 01h
+							db	 01h
+							db	 01h
+							db	 01h
+							db	 01h
+							db	 01h
+							db	 01h
+							db	 01h
+							db	 01h
+							db	 01h
+							db	 01h
+							db	 01h
+							db	 01h
+							db	 01h
+							db	 01h
+							db	 01h
+							db	 01h
+							db	 01h
+							db	 01h
+							db	 01h
+							db	 01h
+							db	 01h
+							db	 01h
+							db	 01h
+							db	 01h
+							db	 01h
+							db	 01h
+							db	 01h
+							db	 01h
+						
+	HorizontalRedTrack30	db	 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h
+
+			
+	TrackPart30x30			db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+
+		   
 
 	matrix dw ?
 
@@ -137,29 +199,13 @@ DATASEG
 CODESEG
 
 
-
-
 start:
+	
+
 	mov ax, @data
 	mov ds, ax
 
 	call SetGraphic
-
-	mov [P1X], 10
-	mov [P1Y], 10
-
-	mov [P2X], 200
-	mov [P2Y], 120
-
-	mov [LINEFILLCOLOR], 9
-
-	call DrawAnyLine
-
-	xor ah, ah
-	int 16h
-	mov ah, 1
-	int 16h
-
 		
 	call ShowMainIntro
 	cmp [ErrorFile],1
@@ -211,10 +257,14 @@ cont5:
 
 cont6:
 
-	call ShowYellowCar
+	call CreateTrack
 
-	mov cx, 1
-	mov dx, 1
+	call ShowFirstPlayerCar
+
+
+	xor bx, bx
+	mov cx, 0
+	mov dx, 128
 	mov ah, 0Dh
 	int 10h
 
@@ -553,7 +603,7 @@ proc ShowTrackScreen near
 	push dx
 	push ax
 
-	mov dx, offset TrackName
+	mov dx, offset EndRoadName
 	mov [BmpLeft],0
 	mov [BmpTop],0
 	mov [BmpColSize], 320
@@ -561,7 +611,7 @@ proc ShowTrackScreen near
 
 	call OpenShowBmp
 	mov ax, [FileHandle]
-	mov [TrackHandle], ax
+	mov [EndRoadHandle], ax
 	
 	pop ax
 	pop dx
@@ -569,29 +619,339 @@ proc ShowTrackScreen near
 	ret
 endp ShowTrackScreen
 
-;=========================================================
-;====ShowYellowCar- shows blue car for first player=========
-;=========================================================
-proc ShowYellowCar near
+
+;==============================================
+;====CreateTrack- creates the whole track======
+;==============================================
+proc CreateTrack near
+;first row-
+	mov di, 320 * 10 + 10
+	call CreateTopLeftTrackPiece
+
+	mov cx, 8
+TopTrackLoop:
+	add di, 30
+	call CreateTopTrackPiece
+	loop TopTrackLoop
+
+	add di, 30
+	call CreateTopRightTrackPiece
+
+;second row-
+	add di, 320 * 29 + 50
+
+	call CreateLeftTrackPiece
+	add di, 30
+	call Create30x30TrackSquare
+
+	mov cx, 6
+TopTrackLoop2:
+	add di, 30
+	call CreateBottomTrackPiece
+	loop TopTrackLoop2
+
+	add di, 30
+	call Create30x30TrackSquare
+	add di, 30
+	call CreateRightTrackPiece
+
+;third and fourth rows-
+	mov cx, 2
+MiddleTrackLoop:
+	add di, 320 * 29 + 50
+	call CreateLeftTrackPiece
+	add di, 30
+	call CreateRightTrackPiece
+	add di, 30 * 7
+	call CreateLeftTrackPiece
+	add di, 30
+	call CreateRightTrackPiece
+	loop MiddleTrackLoop
+
+;fifth row-
+	add di, 320 * 29 + 50
+	call CreateLeftTrackPiece
+	add di, 30
+	call Create30x30TrackSquare
+
+	mov cx, 6
+BottomTrackLoop1:
+	add di, 30
+	call CreateTopTrackPiece
+	loop BottomTrackLoop1
+
+	add di, 30
+	call Create30x30TrackSquare
+	add di, 30
+	call CreateRightTrackPiece
+
+;sixth row-
+	add di, 320 * 29 + 50
+	call CreateBottomLeftTrackPiece
+
+	mov cx, 8
+BottomTrackLoop2:
+	add di, 30
+	call CreateBottomTrackPiece
+	loop BottomTrackLoop2
+
+	add di, 30
+	call CreateBottomRightTrackPiece
+
+;finish line-
+	call CreateFinishLineTrackPiece
+
+	ret
+endp CreateTrack
+
+
+
+;=======================================================================
+;====CreateFinishLineTrackPiece- shows the finish line of the track=====
+;=======================================================================
+;di- start byte on screen
+proc CreateFinishLineTrackPiece near
+	push cx
+	push dx
+	push di
+
+	xor al, al
+	mov si, 60
+	mov cx, 159
+	mov dx, 130
+	call DrawVerticalLine
+
+	pop di
+	pop dx
+	pop cx
+
+	ret
+endp CreateFinishLineTrackPiece
+
+
+
+
+;=======================================================================
+;====CreateTopRightTrackPiece- shows the top right part of the track====
+;=======================================================================
+;di- start byte on screen
+proc CreateTopRightTrackPiece near
+
+	call CreateRightTrackPiece
+
+	call CreateHorizontalTrackLine
+
+	ret
+endp CreateTopRightTrackPiece
+
+
+;=====================================================================
+;====CreateTopLeftTrackPiece- shows the top left part of the track====
+;=====================================================================
+;di- start byte on screen
+proc CreateTopLeftTrackPiece near
+
+	call CreateLeftTrackPiece
+
+	call CreateHorizontalTrackLine
+
+	ret
+endp CreateTopLeftTrackPiece
+
+
+;=====================================================================
+;====CreateTopTrackPiece- shows the top part of the track=============
+;=====================================================================
+;di- start byte on screen
+proc CreateTopTrackPiece near
+
+	call Create30x30TrackSquare
+
+	call CreateHorizontalTrackLine
+
+	ret
+endp CreateTopTrackPiece
+
+
+;=====================================================================
+;====CreateRightTrackPiece- shows the right part of the track=========
+;=====================================================================
+;di- start byte on screen
+proc CreateRightTrackPiece near
+	push di
+
+	call Create30x30TrackSquare
+
+	add di, 29
+	call CreateVerticalTrackLine
+
+	pop di
+
+	ret
+endp CreateRightTrackPiece
+
+
+;==================================================================================
+;====CreateBottomRightTrackPiece- shows the bottom right part of the track=========
+;==================================================================================
+;di- start byte on screen
+proc CreateBottomRightTrackPiece near
+	push di
+
+	call CreateRightTrackPiece
+
+	add di, 320 * 29
+	call CreateHorizontalTrackLine
+
+	pop di
+
+	ret
+endp CreateBottomRightTrackPiece
+
+
+;================================================================================
+;====CreateBottomLeftTrackPiece- shows the bottom left part of the track=========
+;================================================================================
+;di- start byte on screen
+proc CreateBottomLeftTrackPiece near
+	push di
+
+	call CreateLeftTrackPiece
+
+	add di, 320 * 29
+	call CreateHorizontalTrackLine
+
+	pop di
+
+	ret
+endp CreateBottomLeftTrackPiece
+
+;===================================================================
+;====CreateLeftTrackPiece- shows the left part of the track=========
+;===================================================================
+;di- start byte on screen
+proc CreateLeftTrackPiece near
+
+	call Create30x30TrackSquare
+
+	call CreateVerticalTrackLine
+
+	ret
+endp CreateLeftTrackPiece
+
+;===================================================================
+;====CreateBottomTrackPiece- shows the bottom part of the track=====
+;===================================================================
+;di- start byte on screen
+proc CreateBottomTrackPiece near
+	push di
+
+	call Create30x30TrackSquare
+
+	add di, 320 * 29
+
+	call CreateHorizontalTrackLine
+
+	pop di
+
+	ret
+endp CreateBottomTrackPiece
+
+;===================================================================
+;====CreateHorizontalTrackLine- creates 30x1 line for track=========
+;===================================================================
+;di- start byte on screen
+proc CreateHorizontalTrackLine near
+	push cx
+	push dx
+	push di
+
+	lea cx, [HorizontalRedTrack30]
+	mov [matrix], cx
+	mov dx, 30
+	mov cx, 1
+
+	call PutMatrixInScreen
+
+	pop di
+	pop dx
+	pop cx
+
+	ret
+endp CreateHorizontalTrackLine
+
+;===================================================================
+;====CreateVerticalTrackLine- creates 1x30 line for track===========
+;===================================================================
+;di- start byte on screen
+proc CreateVerticalTrackLine near
+	push cx
+	push dx
+	push di
+
+	lea cx, [VerticalRedTrack30]
+	mov [matrix], cx
+	mov dx, 1
+	mov cx, 30
+
+	call PutMatrixInScreen
+
+	pop di
+	pop dx
+	pop cx
+
+	ret
+endp CreateVerticalTrackLine
+
+
+
+;===================================================================
+;====Create30x30TrackSquare- creates the 30x30 track square=========
+;===================================================================
+;di- start byte on screen
+proc Create30x30TrackSquare near
+	push cx
+	push dx
+	push di
+
+	lea cx, [TrackPart30x30]
+	mov [matrix], cx
+	mov dx, 30
+	mov cx, 30
+
+	call PutMatrixInScreen
+
+	pop di
+	pop dx
+	pop cx
+
+	ret
+endp Create30x30TrackSquare
+
+;================================================================
+;====ShowFirstPlayerCar- shows blue car for first player=========
+;================================================================
+proc ShowFirstPlayerCar near
 	push di
 	push cx
 	push dx	
 
-	mov di, 0A000H
-	lea cx, [YellowCar]
-	mov [matrix] ,cx
+	mov di, 0A000h + 400
+	lea cx, [FirstPlayerCar]
+	mov [matrix], cx
 	  
-	mov dx, 10   ; cols
-	mov cx, 6  ;rows
+	mov dx, 18   ; cols
+	mov cx, 13  ;rows
 	 
-	call putMatrixInScreen
+	call PutMatrixInScreen
 
 	pop dx
 	pop cx
 	pop di
 
 	ret
-endp ShowYellowCar
+endp ShowFirstPlayerCar
+
 
 ;=========================================================
 ;====DrawAnyLine- shows a line by using any 2 points======
@@ -671,9 +1031,12 @@ DeltaYLargerThan0:
 	inc [DeltaY]
 
 ContDrawLine5:
+	mov cx, [DeltaX]
+	mov bx, [DeltaY]
 	cmp cx, bx
 	jl DeltaXIsSmallerThanDeltaY
 
+	xor dx, dx
 	mov ax, [DeltaX]
 	mov bx, [DeltaY]
 	div bx
@@ -700,6 +1063,8 @@ ContDrawLine5:
 	jmp EndSpecialLine
 
 DeltaXIsSmallerThanDeltaY:
+
+	xor dx, dx
 	mov ax, [DeltaY]
 	mov bx, [DeltaX]
 	div bx
