@@ -74,7 +74,7 @@ DATASEG
 ;black -0h
 ;yellow- 3h
 ;blue -4h
-;purple -5h
+;purzple -5h
 ;teal -6h
 ;white -7h
 ;different white -8h
@@ -99,15 +99,15 @@ DATASEG
 							db	 03h, 03h, 03h, 00h, 06h, 00h, 03h, 03h, 03h, 03h, 03h, 03h, 00h, 06h, 00h, 03h, 03h, 03h
 							db	 03h, 03h, 03h, 03h, 00h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 00h, 03h, 03h, 03h, 03h
 
-sdfsdf 			db   00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h
-							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h, 06h, 06h, 06h, 06h, 00h
-							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h, 06h, 06h, 06h, 00h
-							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h, 06h, 06h, 00h
-							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h, 06h, 00h
-							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h, 00h
-							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h
-							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h
-							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h
+	SecondPlayerCar 		db   00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h
+							db   00h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 00h, 06h, 06h, 06h, 06h, 00h
+							db   00h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 00h, 06h, 06h, 06h, 00h
+							db   00h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 00h, 06h, 06h, 00h
+							db   00h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 00h, 06h, 00h
+							db   00h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 00h, 00h
+							db   00h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 00h
+							db   00h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 00h
+							db   00h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 00h
 							db   00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h
 							db	 03h, 03h, 00h, 06h, 06h, 06h, 00h, 03h, 03h, 03h, 03h, 00h, 06h, 06h, 06h, 00h, 03h, 03h
 							db	 03h, 03h, 03h, 00h, 06h, 00h, 03h, 03h, 03h, 03h, 03h, 03h, 00h, 06h, 00h, 03h, 03h, 03h
@@ -211,6 +211,9 @@ sdfsdf 			db   00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 
 	ValueToAbsolute dw ?
 
 	LineFillColor db ?
+
+	FirstPlayerLocation dw ?
+	SecondPlayerLocation dw ?
 CODESEG
 
 
@@ -219,7 +222,7 @@ start:
 
 	mov ax, @data
 	mov ds, ax
-
+	
 	call SetGraphic
 		
 	call ShowMainIntro
@@ -265,23 +268,18 @@ cont4:
 cont5:
 	call WaitForButtonToGame
 
-	call ShowTrackScreen
-	cmp [ErrorFile],1
-	jne cont6
-	call IfError
+	call ShowWholeTrack
 
-cont6:
-
-	call CreateTrack
-
-	call ShowFirstPlayerCar
+	mov di, 320 * 13 + 50
+	call ShowSecondPlayerCar
+	mov [SecondPlayerLocation], di
 
 
-	xor bx, bx
-	mov cx, 0
-	mov dx, 128
-	mov ah, 0Dh
-	int 10h
+mov cx, 7
+EndlessLoop1:
+	call MoveSecondPlayerCar
+	inc cx
+	loop EndlessLoop1
 
 exit:
 	xor ah, ah
@@ -303,6 +301,36 @@ exit:
 ;===== Procedures  Area ===
 ;==========================
 ;==========================
+
+
+;===============================================
+;====ShowWholeTrack- shows whole track==========
+;===============================================
+proc ShowWholeTrack near
+	push ax
+	push bx
+	push si
+	push di
+	push bp
+	
+	call ShowTrackScreen
+;	cmp [ErrorFile],1
+;	jne ContTrack
+;	call IfError
+
+;ContTrack:
+
+	call CreateTrack
+
+	pop bp
+	pop di
+	pop si
+	pop bx
+	pop ax
+
+	ret
+endp ShowWholeTrack
+
 
 
 ;===============================================
@@ -639,6 +667,9 @@ endp ShowTrackScreen
 ;====CreateTrack- creates the whole track======
 ;==============================================
 proc CreateTrack near
+	push di
+	push cx
+
 ;first row-
 	mov di, 320 * 10 + 10
 	call CreateTopLeftTrackPiece
@@ -715,6 +746,9 @@ BottomTrackLoop2:
 
 ;finish line-
 	call CreateFinishLineTrackPiece
+
+	pop cx
+	pop di
 
 	ret
 endp CreateTrack
@@ -943,15 +977,241 @@ proc Create30x30TrackSquare near
 	ret
 endp Create30x30TrackSquare
 
+;=========================================================
+;====MoveSecondPlayerCar- move car for second player========
+;=========================================================
+proc MoveSecondPlayerCar near
+	push ax
+	push bx
+	push cx
+	push dx
+	push si
+	push di
+
+	mov di, [SecondPlayerLocation]
+
+	mov si, di
+
+	xor ax, ax
+	int 16h
+	mov ah, 1
+	int 16h
+
+	cmp al, 'w'
+	jne NotSecondPlayerW
+	sub di, 320
+	jmp ContinueMoveSecondCar
+
+NotSecondPlayerW:
+	cmp al, 's'
+	jne NotSecondPlayerS
+	add di, 320
+	jmp ContinueMoveSecondCar
+
+NotSecondPlayerS:
+	cmp al, 'a'
+	jne NotSecondPlayerA
+	dec di
+	jmp ContinueMoveSecondCar
+
+NotSecondPlayerA:
+	cmp al, 'd'
+	jne ExitMovePlayerTwo
+	inc di
+
+ContinueMoveSecondCar:
+;check if top left hit red-
+	mov ax, di
+	mov bx, 320
+	xor dx, dx
+	div bx
+	
+	mov cx, dx
+	mov dx,ax
+	mov ah, 0Dh
+	int 10h
+	cmp al, 01H
+	je Player2HitRed
+
+;check if bottom right hit red-
+	add cx,17
+	add dx,12
+	mov ah, 0Dh
+	int 10h
+	cmp al, 01H
+	je Player2HitRed
+
+;check if top right hit red-
+	sub dx, 12
+	mov ah, 0Dh
+	int 10h
+	cmp al, 01H
+	je Player2HitRed
+
+;check if bottom left hit red-
+	add dx, 12
+	sub cx, 17
+	mov ah, 0Dh
+	int 10h
+	cmp al, 01H
+	je Player2HitRed
+
+	push di
+	call ShowWholeTrack
+	pop di
+	call ShowSecondPlayerCar
+	jmp exitMovePlayerTwo
+
+Player2HitRed:
+	mov di, si
+
+exitMovePlayerTwo:
+	mov [SecondPlayerLocation], di
+
+	pop di
+	pop si
+	pop dx
+	pop cx
+	pop bx
+	pop ax
+
+	ret
+endp MoveSecondPlayerCar
+
+;=========================================================
+;====MoveFirstPlayerCar- move car for first player========
+;=========================================================
+proc MoveFirstPlayerCar near
+	push ax
+	push bx
+	push cx
+	push dx
+	push si
+	push di
+
+	mov di, [FirstPlayerLocation]
+
+	mov si, di
+
+	xor ax, ax
+	int 16h
+	mov ah, 1
+	int 16h
+
+	cmp al, 'w'
+	jne NotFirstPlayerW
+	sub di, 320
+	jmp ContinueMoveFirstCar
+
+NotFirstPlayerW:
+	cmp al, 's'
+	jne NotFirstPlayerS
+	add di, 320
+	jmp ContinueMoveFirstCar
+
+NotFirstPlayerS:
+	cmp al, 'a'
+	jne NotFirstPlayerA
+	dec di
+	jmp ContinueMoveFirstCar
+
+NotFirstPlayerA:
+	cmp al, 'd'
+	jne ExitMovePlayerOne
+	inc di
+
+ContinueMoveFirstCar:
+;check if top left hit red-
+	mov ax, di
+	mov bx, 320
+	xor dx, dx
+	div bx
+	
+	mov cx, dx
+	mov dx,ax
+	mov ah, 0Dh
+	int 10h
+	cmp al, 01H
+	je Player1HitRed
+
+;check if bottom right hit red-
+	add cx,17
+	add dx,12
+	mov ah, 0Dh
+	int 10h
+	cmp al, 01H
+	je Player1HitRed
+
+;check if top right hit red-
+	sub dx, 12
+	mov ah, 0Dh
+	int 10h
+	cmp al, 01H
+	je Player1HitRed
+
+;check if bottom left hit red-
+	add dx, 12
+	sub cx, 17
+	mov ah, 0Dh
+	int 10h
+	cmp al, 01H
+	je Player1HitRed
+
+	push di
+	call ShowWholeTrack
+	pop di
+	call ShowFirstPlayerCar
+	jmp exitMovePlayerOne
+
+Player1HitRed:
+	mov di, si
+
+exitMovePlayerOne:
+	mov [FirstPlayerLocation], di
+
+	pop di
+	pop si
+	pop dx
+	pop cx
+	pop bx
+	pop ax
+
+	ret
+endp MoveFirstPlayerCar
+
+;================================================================
+;====ShowSecondPlayerCar- shows red car for second player========
+;================================================================
+proc ShowSecondPlayerCar near
+	push cx
+	push dx	
+	push di
+
+	lea cx, [SecondPlayerCar]
+	mov [matrix], cx
+	  
+	mov dx, 18   ; cols
+	mov cx, 13  ;rows
+	 
+	call PutMatrixInScreen
+
+	pop di
+	pop dx
+	pop cx
+
+	ret
+endp ShowSecondPlayerCar
+
+
+
 ;================================================================
 ;====ShowFirstPlayerCar- shows blue car for first player=========
 ;================================================================
 proc ShowFirstPlayerCar near
-	push di
 	push cx
 	push dx	
+	push di
 
-	mov di, 0A000h + 400
 	lea cx, [FirstPlayerCar]
 	mov [matrix], cx
 	  
@@ -960,9 +1220,9 @@ proc ShowFirstPlayerCar near
 	 
 	call PutMatrixInScreen
 
+	pop di
 	pop dx
 	pop cx
-	pop di
 
 	ret
 endp ShowFirstPlayerCar
