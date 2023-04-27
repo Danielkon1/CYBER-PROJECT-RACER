@@ -225,6 +225,11 @@ start:
 	
 	call SetGraphic
 		
+	xor ah, ah
+	int 16h
+	mov ah, 1
+	int 16h
+
 	call ShowMainIntro
 	cmp [ErrorFile],1
 	jne cont1
@@ -274,10 +279,15 @@ cont5:
 	call ShowSecondPlayerCar
 	mov [SecondPlayerLocation], di
 
+	mov di, 320 * 28 + 50
+	call ShowFirstPlayerCar
+	mov [FirstPlayerLocation], di
+
 
 mov cx, 7
 EndlessLoop1:
 	call MoveSecondPlayerCar
+	call MoveFirstPlayerCar
 	inc cx
 	loop EndlessLoop1
 
@@ -994,28 +1004,28 @@ proc MoveSecondPlayerCar near
 
 	xor ax, ax
 	int 16h
-	mov ah, 1
-	int 16h
+;	mov ah, 1
+;	int 16h
 
-	cmp al, 'w'
+	cmp ah, 48h
 	jne NotSecondPlayerW
 	sub di, 320
 	jmp ContinueMoveSecondCar
 
 NotSecondPlayerW:
-	cmp al, 's'
+	cmp ah, 50h
 	jne NotSecondPlayerS
 	add di, 320
 	jmp ContinueMoveSecondCar
 
 NotSecondPlayerS:
-	cmp al, 'a'
+	cmp ah, 4Bh
 	jne NotSecondPlayerA
 	dec di
 	jmp ContinueMoveSecondCar
 
 NotSecondPlayerA:
-	cmp al, 'd'
+	cmp ah, 4Dh
 	jne ExitMovePlayerTwo
 	inc di
 
@@ -1056,11 +1066,20 @@ ContinueMoveSecondCar:
 	cmp al, 01H
 	je Player2HitRed
 
+;check if at finish line-
+	cmp al, 0
+	je Player2FinishLine
+
 	push di
 	call ShowWholeTrack
+	mov di, [FirstPlayerLocation]
+	call ShowFirstPlayerCar
 	pop di
 	call ShowSecondPlayerCar
 	jmp exitMovePlayerTwo
+
+;Player2FinishLine:
+;	mov di
 
 Player2HitRed:
 	mov di, si
@@ -1095,28 +1114,28 @@ proc MoveFirstPlayerCar near
 
 	xor ax, ax
 	int 16h
-	mov ah, 1
-	int 16h
+;	mov ah, 1
+;	int 16h
 
-	cmp al, 'w'
+	cmp ah, 11h
 	jne NotFirstPlayerW
 	sub di, 320
 	jmp ContinueMoveFirstCar
 
 NotFirstPlayerW:
-	cmp al, 's'
+	cmp ah, 1Fh
 	jne NotFirstPlayerS
 	add di, 320
 	jmp ContinueMoveFirstCar
 
 NotFirstPlayerS:
-	cmp al, 'a'
+	cmp ah, 1Eh
 	jne NotFirstPlayerA
 	dec di
 	jmp ContinueMoveFirstCar
 
 NotFirstPlayerA:
-	cmp al, 'd'
+	cmp ah, 20h
 	jne ExitMovePlayerOne
 	inc di
 
@@ -1159,6 +1178,8 @@ ContinueMoveFirstCar:
 
 	push di
 	call ShowWholeTrack
+	mov di, [SecondPlayerLocation]
+	call ShowSecondPlayerCar
 	pop di
 	call ShowFirstPlayerCar
 	jmp exitMovePlayerOne
