@@ -1,3 +1,4 @@
+.486
 IDEAL
 MODEL small
 
@@ -85,68 +86,71 @@ DATASEG
 ;brown -13h
 ;light brown -14
 ;orange -17
-	FirstPlayerCar 			db   01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h
-							db   01h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 01h, 06h, 06h, 06h, 06h, 01h
-							db   01h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 01h, 06h, 06h, 06h, 01h
-							db   01h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 01h, 06h, 06h, 01h
-							db   01h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 01h, 06h, 01h
-							db   01h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 01h, 01h
-							db   01h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 01h
-							db   01h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 01h
-							db   01h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 01h
-							db   01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h
-							db	 03h, 03h, 01h, 06h, 06h, 06h, 01h, 03h, 03h, 03h, 03h, 01h, 06h, 06h, 06h, 01h, 03h, 03h
-							db	 03h, 03h, 03h, 01h, 06h, 01h, 03h, 03h, 03h, 03h, 03h, 03h, 01h, 06h, 01h, 03h, 03h, 03h
-							db	 03h, 03h, 03h, 03h, 01h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 01h, 03h, 03h, 03h, 03h
+	FirstPlayerCar 			db   00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h
+							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h, 06h, 06h, 06h, 06h, 00h
+							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h, 06h, 06h, 06h, 00h
+							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h, 06h, 06h, 00h
+							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h, 06h, 00h
+							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h, 00h
+							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h
+							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h
+							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h
+							db   00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h
+							db	 03h, 03h, 00h, 06h, 06h, 06h, 00h, 03h, 03h, 03h, 03h, 00h, 06h, 06h, 06h, 00h, 03h, 03h
+							db	 03h, 03h, 03h, 00h, 06h, 00h, 03h, 03h, 03h, 03h, 03h, 03h, 00h, 06h, 00h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 00h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 00h, 03h, 03h, 03h, 03h
 
-	SecondPlayerCar 		db   01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h
-							db   01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 06h, 06h, 06h, 06h, 01h
-							db   01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 06h, 06h, 06h, 01h
-							db   01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 06h, 06h, 01h
-							db   01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 06h, 01h
-							db   01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h
-							db   01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h
-							db   01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h
-							db   01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h
-							db   01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h
-							db	 03h, 03h, 01h, 06h, 06h, 06h, 01h, 03h, 03h, 03h, 03h, 01h, 06h, 06h, 06h, 01h, 03h, 03h
-							db	 03h, 03h, 03h, 01h, 06h, 01h, 03h, 03h, 03h, 03h, 03h, 03h, 01h, 06h, 01h, 03h, 03h, 03h
-							db	 03h, 03h, 03h, 03h, 01h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 01h, 03h, 03h, 03h, 03h
+	SecondPlayerCar 		db   00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h
+							db   00h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 00h, 06h, 06h, 06h, 06h, 00h
+							db   00h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 00h, 06h, 06h, 06h, 00h
+							db   00h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 00h, 06h, 06h, 00h
+							db   00h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 00h, 06h, 00h
+							db   00h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 00h, 00h
+							db   00h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 00h
+							db   00h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 00h
+							db   00h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 00h
+							db   00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h
+							db	 03h, 03h, 00h, 06h, 06h, 06h, 00h, 03h, 03h, 03h, 03h, 00h, 06h, 06h, 06h, 00h, 03h, 03h
+							db	 03h, 03h, 03h, 00h, 06h, 00h, 03h, 03h, 03h, 03h, 03h, 03h, 00h, 06h, 00h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 00h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 00h, 03h, 03h, 03h, 03h
 	
 
 
-	VerticalRedTrack30		db	 01h, 01h
-							db	 01h, 01h
-							db	 01h, 01h
-							db	 01h, 01h
-							db	 01h, 01h
-							db	 01h, 01h
-							db	 01h, 01h
-							db	 01h, 01h
-							db	 01h, 01h
-							db	 01h, 01h
-							db	 01h, 01h
-							db	 01h, 01h
-							db	 01h, 01h
-							db	 01h, 01h
-							db	 01h, 01h
-							db	 01h, 01h
-							db	 01h, 01h
-							db	 01h, 01h
-							db	 01h, 01h
-							db	 01h, 01h
-							db	 01h, 01h
-							db	 01h, 01h
-							db	 01h, 01h
-							db	 01h, 01h
-							db	 01h, 01h
-							db	 01h, 01h
-							db	 01h, 01h
-							db	 01h, 01h
-							db	 01h, 01h
-							db	 01h, 01h
+	VerticalRedTrack30		db	 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h
 						
 	HorizontalRedTrack30	db	 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h
+							db	 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h
 							db	 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h
 
 			
@@ -221,10 +225,37 @@ CODESEG
 
 
 start:
-	
 
 	mov ax, @data
 	mov ds, ax
+
+	call Game
+
+exit:
+	xor ah, ah
+	int 16h
+	mov ah, 1
+	int 16h
+	
+	mov ax,2
+	int 10h
+	
+	
+	mov ax, 4c00h
+	int 21h
+	
+
+
+;==========================
+;==========================
+;===== Procedures  Area ===
+;==========================
+;==========================
+
+;=======================================
+;====Game- contains whole game==========
+;=======================================
+proc Game near
 	
 	call SetGraphic
 
@@ -277,7 +308,7 @@ cont5:
 	call ShowSecondPlayerCar
 	mov [SecondPlayerLocation], di
 
-	mov di, 320 * 163 + 140
+	mov di, 320 * 145 + 140
 	call ShowFirstPlayerCar
 	mov [FirstPlayerLocation], di
 
@@ -293,26 +324,8 @@ EndlessLoop1:
 ;	inc cx
 ;	loop EndlessLoop1
 
-exit:
-	xor ah, ah
-	int 16h
-	mov ah, 1
-	int 16h
-	
-	mov ax,2
-	int 10h
-	
-	
-	mov ax, 4c00h
-	int 21h
-	
-
-
-;==========================
-;==========================
-;===== Procedures  Area ===
-;==========================
-;==========================
+	ret
+endp Game
 
 
 ;===============================================
@@ -775,13 +788,21 @@ proc CreateFinishLineTrackPiece near
 	push cx
 	push dx
 	push di
+	push bx
 
 	xor al, al
-	mov si, 60
-	mov cx, 159
+	mov si, 64
+	mov cx, 170
 	mov dx, 130
 	call DrawVerticalLine
 
+FinishLineLoop:
+	inc cx
+	call DrawVerticalLine
+	cmp cx, 175
+	jne FinishLineLoop
+
+	pop bx
 	pop di
 	pop dx
 	pop cx
@@ -843,7 +864,7 @@ proc CreateRightTrackPiece near
 
 	call Create30x30TrackSquare
 
-	add di, 29
+	add di, 25
 	call CreateVerticalTrackLine
 
 	pop di
@@ -861,7 +882,7 @@ proc CreateBottomRightTrackPiece near
 
 	call CreateRightTrackPiece
 
-	add di, 320 * 29
+	add di, 320 * 25
 	call CreateHorizontalTrackLine
 
 	pop di
@@ -879,7 +900,7 @@ proc CreateBottomLeftTrackPiece near
 
 	call CreateLeftTrackPiece
 
-	add di, 320 * 29
+	add di, 320 * 25
 	call CreateHorizontalTrackLine
 
 	pop di
@@ -909,7 +930,7 @@ proc CreateBottomTrackPiece near
 
 	call Create30x30TrackSquare
 
-	add di, 320 * 29
+	add di, 320 * 25
 
 	call CreateHorizontalTrackLine
 
@@ -930,7 +951,7 @@ proc CreateHorizontalTrackLine near
 	lea cx, [HorizontalRedTrack30]
 	mov [matrix], cx
 	mov dx, 30
-	mov cx, 2
+	mov cx, 5
 
 	call PutMatrixInScreen
 
@@ -952,7 +973,7 @@ proc CreateVerticalTrackLine near
 
 	lea cx, [VerticalRedTrack30]
 	mov [matrix], cx
-	mov dx, 2
+	mov dx, 5
 	mov cx, 30
 
 	call PutMatrixInScreen
@@ -1024,7 +1045,12 @@ proc MoveSecondPlayerCar near
 
 	mov si, di
 
-	xor ax, ax
+	mov ah, 1
+	int 16h
+	
+	jz exitMovePlayerTwo
+
+	xor ah, ah
 	int 16h
 ;	mov ah, 1
 ;	int 16h
@@ -1119,9 +1145,36 @@ exitMovePlayerTwo:
 	ret
 endp MoveSecondPlayerCar
 
-proc CheckIfFirstPlayerWon near
+proc CheckForRightSideBlack near
+	push ax
+	push bx
+	push di
+	push dx
+	push cx
+
+	mov ax, di
+	mov bx, 320
+	xor dx, dx
+	div bx
+	mov cx, dx
+	mov dx,ax
+	add cx,17
+	add dx,12
+	mov ah, 0Dh
+	int 10h
+
+	cmp al, 00H
+
+
+	pop cx
+	pop dx
+	pop di
+	pop bx
+	pop ax
 	
-endp CheckIfFirstPlayerWon
+	ret
+endp CheckForRightSideBlack
+
 ;=========================================================
 ;====MoveFirstPlayerCar- move car for first player========
 ;=========================================================
@@ -1137,32 +1190,39 @@ proc MoveFirstPlayerCar near
 
 	mov si, di
 
-	xor ax, ax
+	mov ah, 1
+	int 16h
+
+	jz exitMovePlayerOne
+
+	xor ah, ah
 	int 16h
 ;	mov ah, 1
 ;	int 16h
 
 	cmp ah, 11h
 	jne NotFirstPlayerW
-	sub di, 320
+	sub di, 320 * 5
 	jmp ContinueMoveFirstCar
 
 NotFirstPlayerW:
 	cmp ah, 1Fh
 	jne NotFirstPlayerS
-	add di, 320
+	add di, 320 * 5
 	jmp ContinueMoveFirstCar
 
 NotFirstPlayerS:
 	cmp ah, 1Eh
 	jne NotFirstPlayerA
-	dec di
+	sub di, 5
 	jmp ContinueMoveFirstCar
 
 NotFirstPlayerA:
 	cmp ah, 20h
 	jne ExitMovePlayerOne
-	inc di
+	add di, 5
+	call CheckForRightSideBlack
+	je Player1HitRed
 
 ContinueMoveFirstCar:
 ;check if top left hit red-
@@ -1177,8 +1237,8 @@ ContinueMoveFirstCar:
 	int 10h
 	cmp al, 01H
 	je Player1HitRed
-	cmp al, 00H
-	je PlayerOneWon
+;	cmp al, 00H
+;	je PlayerOneWon
 
 ;check if bottom right hit red-
 	add cx,17
@@ -1187,6 +1247,7 @@ ContinueMoveFirstCar:
 	int 10h
 	cmp al, 01H
 	je Player1HitRed
+
 	cmp al, 00H
 	je Player1HitRed
 
@@ -1213,8 +1274,8 @@ ContinueMoveFirstCar:
 	call ShowFirstPlayerCar
 	jmp exitMovePlayerOne
 
-PlayerOneWon:
-	mov [DidPlayerWin], 1
+;PlayerOneWon:
+;	mov [DidPlayerWin], 1
 
 Player1HitRed:
 	mov di, si
