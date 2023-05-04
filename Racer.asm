@@ -1050,7 +1050,7 @@ proc MoveSecondPlayerCar near
 	
 	jz exitMovePlayerTwo
 
-	xor ah, ah
+	mov ah, 0
 	int 16h
 ;	mov ah, 1
 ;	int 16h
@@ -1195,7 +1195,7 @@ proc MoveFirstPlayerCar near
 
 	jz exitMovePlayerOne
 
-	xor ah, ah
+	mov ah, 0
 	int 16h
 ;	mov ah, 1
 ;	int 16h
@@ -1248,8 +1248,8 @@ ContinueMoveFirstCar:
 	cmp al, 01H
 	je Player1HitRed
 
-	cmp al, 00H
-	je Player1HitRed
+;	cmp al, 00H
+;	je Player1HitRed
 
 ;check if top right hit red-
 	sub dx, 12
