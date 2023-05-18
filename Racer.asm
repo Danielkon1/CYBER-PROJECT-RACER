@@ -18,18 +18,14 @@ RULES_PAGE_NAME equ 'rulepage.bmp'
 GAME_BUTTON_NAME equ 'gamebutt.bmp'
 TRACK_NAME equ 'track.bmp'
 END_ROAD_NAME equ 'endroad.bmp'
-
-BMP_WIDTH = 70
-BMP_HEIGHT = 70
-
-
+WINNER_SCREEN_NAME equ 'winner.bmp'
 
 
 DATASEG
 
-    OneBmpLine 	db BMP_WIDTH dup (0)  ; One Color line read buffer
+    OneBmpLine 	db 200 dup (0)  ; One Color line read buffer
 
-    ScrLine 	db BMP_WIDTH dup (0)  ; One Color line read buffer
+    ScrLine 	db 320 dup (0)  ; One Color line read buffer
 
 	;BMP File data
 	FileName 	db FILE_NAME_IN ,0
@@ -44,6 +40,7 @@ DATASEG
 	GameButtonName db GAME_BUTTON_NAME, 0
 	TrackName db TRACK_NAME, 0
 	EndRoadName db END_ROAD_NAME, 0
+	WinnerScreenName db WINNER_SCREEN_NAME, 0
 
 	IntroHandle dw ?
 	PlayersNamesHandle dw ?
@@ -52,6 +49,7 @@ DATASEG
 	GameButtonHandle dw ?
 	TrackHandle dw ?
 	EndRoadHandle dw ?
+	WinnerScreenHandle dw ?
 	
 
 
@@ -86,33 +84,33 @@ DATASEG
 ;brown -13h
 ;light brown -14
 ;orange -17
-	FirstPlayerCar 			db   00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h
-							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h, 06h, 06h, 06h, 06h, 00h
-							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h, 06h, 06h, 06h, 00h
-							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h, 06h, 06h, 00h
-							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h, 06h, 00h
-							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h, 00h
-							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h
-							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h
-							db   00h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 00h
-							db   00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h
-							db	 03h, 03h, 00h, 06h, 06h, 06h, 00h, 03h, 03h, 03h, 03h, 00h, 06h, 06h, 06h, 00h, 03h, 03h
-							db	 03h, 03h, 03h, 00h, 06h, 00h, 03h, 03h, 03h, 03h, 03h, 03h, 00h, 06h, 00h, 03h, 03h, 03h
-							db	 03h, 03h, 03h, 03h, 00h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 00h, 03h, 03h, 03h, 03h
+	FirstPlayerCar 			db   13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h
+							db   13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h, 06h, 06h, 06h, 06h, 13h
+							db   13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h, 06h, 06h, 06h, 13h
+							db   13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h, 06h, 06h, 13h
+							db   13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h, 06h, 13h
+							db   13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h, 13h
+							db   13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h
+							db   13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h
+							db   13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h
+							db   13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h
+							db	 03h, 03h, 13h, 06h, 06h, 06h, 13h, 03h, 03h, 03h, 03h, 13h, 06h, 06h, 06h, 13h, 03h, 03h
+							db	 03h, 03h, 03h, 13h, 06h, 13h, 03h, 03h, 03h, 03h, 03h, 03h, 13h, 06h, 13h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 13h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 13h, 03h, 03h, 03h, 03h
 
-	SecondPlayerCar 		db   00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h
-							db   00h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 00h, 06h, 06h, 06h, 06h, 00h
-							db   00h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 00h, 06h, 06h, 06h, 00h
-							db   00h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 00h, 06h, 06h, 00h
-							db   00h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 00h, 06h, 00h
-							db   00h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 00h, 00h
-							db   00h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 00h
-							db   00h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 00h
-							db   00h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 00h
-							db   00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h
-							db	 03h, 03h, 00h, 06h, 06h, 06h, 00h, 03h, 03h, 03h, 03h, 00h, 06h, 06h, 06h, 00h, 03h, 03h
-							db	 03h, 03h, 03h, 00h, 06h, 00h, 03h, 03h, 03h, 03h, 03h, 03h, 00h, 06h, 00h, 03h, 03h, 03h
-							db	 03h, 03h, 03h, 03h, 00h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 00h, 03h, 03h, 03h, 03h
+	SecondPlayerCar 		db   13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h
+							db   13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h, 06h, 06h, 06h, 06h, 13h
+							db   13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h, 06h, 06h, 06h, 13h
+							db   13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h, 06h, 06h, 13h
+							db   13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h, 06h, 13h
+							db   13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h, 13h
+							db   13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h
+							db   13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h
+							db   13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h
+							db   13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h
+							db	 03h, 03h, 13h, 06h, 06h, 06h, 13h, 03h, 03h, 03h, 03h, 13h, 06h, 06h, 06h, 13h, 03h, 03h
+							db	 03h, 03h, 03h, 13h, 06h, 13h, 03h, 03h, 03h, 03h, 03h, 03h, 13h, 06h, 13h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 13h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 13h, 03h, 03h, 03h, 03h
 	
 
 
@@ -221,6 +219,9 @@ DATASEG
 	SecondPlayerLocation dw ?
 	
 	DidPlayerWin db ?
+	
+	PlayerName db 6 dup(?), '$'
+	WinnerNotification db 'The winner is: $'
 CODESEG
 
 
@@ -228,7 +229,12 @@ start:
 
 	mov ax, @data
 	mov ds, ax
+mov ah, 1
+	int 16h
 
+
+	mov ah, 0
+	int 16h
 	call Game
 
 exit:
@@ -313,20 +319,78 @@ cont5:
 	mov [FirstPlayerLocation], di
 
 
-;mov cx, 7
 EndlessLoop1:
+	
 	call MoveSecondPlayerCar
 	call MoveFirstPlayerCar
 
-	cmp [DidPlayerWin], 1
-	jne EndlessLoop1
+	cmp [DidPlayerWin], 0
+	je EndlessLoop1
 
-;	inc cx
-;	loop EndlessLoop1
+	call ShowWinnerScreen
+	cmp [ErrorFile],1
+	jne cont6
+	call IfError
 
+mov cx, 4
+cont6:
+	call ShowWinnerName
+	inc cx
+	loop cont6
+	
 	ret
 endp Game
 
+
+;===============================================
+;====ShowWinnerName- shows the winner's name====
+;===============================================
+proc ShowWinnerName near
+	
+	mov si, 2
+	xor bx, bx
+	mov cx, 6
+
+	cmp [DidPlayerWin], 1
+	jne NotFirstPlayerWin
+	
+CopyLoopFirstPlayer:
+	mov al, [FirstPlayerName + si]
+	mov [PlayerName + bx], al
+
+	inc si
+	inc bx
+	loop CopyLoopFirstPlayer
+
+	jmp ContWinnerName
+
+NotFirstPlayerWin:
+
+CopyLoopSecondPlayer:
+	mov al, [SecondPlayerName + si]
+	mov [PlayerName + bx], al
+
+	inc si
+	inc bx
+	loop CopyLoopSecondPlayer
+
+ContWinnerName:
+
+	mov dh, 5
+	mov dl, 7
+	mov bh, 0
+	mov ah, 2
+	int 10h
+
+	lea dx, [WinnerNotification]
+	mov ah, 9
+	int 21h
+
+	lea dx, [PlayerName]
+	int 21h
+
+	ret
+endp ShowWinnerName
 
 ;===============================================
 ;====ShowWholeTrack- shows whole track==========
@@ -357,6 +421,30 @@ proc ShowWholeTrack near
 endp ShowWholeTrack
 
 
+;===============================================
+;====ShowWinnerScreen- shows winner screen======
+;===============================================
+proc ShowWinnerScreen near
+	push dx
+	push ax
+
+	mov dx, offset WinnerScreenName
+	mov [BmpLeft],0
+	mov [BmpTop],0
+	mov [BmpColSize], 320
+	mov [BmpRowSize] ,200
+
+	call OpenShowBmp
+	mov ax, [FileHandle]
+	mov [WinnerScreenHandle], ax
+
+	pop ax
+	pop dx
+
+	ret
+endp ShowWinnerScreen
+
+
 
 ;===============================================
 ;====ShowMainIntro- shows start picture=========
@@ -369,7 +457,7 @@ proc ShowMainIntro near
 	mov [BmpLeft],0
 	mov [BmpTop],0
 	mov [BmpColSize], 320
-	mov [BmpRowSize] ,200
+	mov [BmpRowSize],200
 
 	call OpenShowBmp
 	mov ax, [FileHandle]
@@ -791,7 +879,7 @@ proc CreateFinishLineTrackPiece near
 	push bx
 
 	xor al, al
-	mov si, 64
+	mov si, 60
 	mov cx, 170
 	mov dx, 130
 	call DrawVerticalLine
@@ -1047,7 +1135,7 @@ proc MoveSecondPlayerCar near
 
 	mov ah, 1
 	int 16h
-	
+
 	jz exitMovePlayerTwo
 
 	mov ah, 0
@@ -1057,25 +1145,31 @@ proc MoveSecondPlayerCar near
 
 	cmp ah, 48h
 	jne NotSecondPlayerW
-	sub di, 320
+	sub di, 320 * 5
 	jmp ContinueMoveSecondCar
 
 NotSecondPlayerW:
 	cmp ah, 50h
 	jne NotSecondPlayerS
-	add di, 320
+	add di, 320 * 5
 	jmp ContinueMoveSecondCar
 
 NotSecondPlayerS:
 	cmp ah, 4Bh
 	jne NotSecondPlayerA
-	dec di
+	sub di, 5
+	call CheckForLeftSideBlackSecondPlayer
+	cmp [DidPlayerWin], 0
+	jne Player2HitRed
+
 	jmp ContinueMoveSecondCar
 
 NotSecondPlayerA:
 	cmp ah, 4Dh
 	jne ExitMovePlayerTwo
-	inc di
+	add di, 5
+	call CheckForRightSideBlack
+	je Player2HitRed
 
 ContinueMoveSecondCar:
 ;check if top left hit red-
@@ -1090,6 +1184,8 @@ ContinueMoveSecondCar:
 	int 10h
 	cmp al, 01H
 	je Player2HitRed
+;	cmp al, 00H
+;	je PlayerOneWon
 
 ;check if bottom right hit red-
 	add cx,17
@@ -1098,6 +1194,9 @@ ContinueMoveSecondCar:
 	int 10h
 	cmp al, 01H
 	je Player2HitRed
+
+;	cmp al, 00H
+;	je Player2HitRed
 
 ;check if top right hit red-
 	sub dx, 12
@@ -1114,10 +1213,6 @@ ContinueMoveSecondCar:
 	cmp al, 01H
 	je Player2HitRed
 
-;check if at finish line-
-;	cmp al, 0
-;	je Player2FinishLine
-
 	push di
 	call ShowWholeTrack
 	mov di, [FirstPlayerLocation]
@@ -1126,8 +1221,8 @@ ContinueMoveSecondCar:
 	call ShowSecondPlayerCar
 	jmp exitMovePlayerTwo
 
-;Player2FinishLine:
-;	mov di
+;PlayerOneWon:
+;	mov [DidPlayerWin], 1
 
 Player2HitRed:
 	mov di, si
@@ -1144,6 +1239,68 @@ exitMovePlayerTwo:
 
 	ret
 endp MoveSecondPlayerCar
+
+proc CheckForLeftSideBlackSecondPlayer near
+	push ax
+	push bx
+	push di
+	push dx
+	push cx
+
+	mov ax, di
+	mov bx, 320
+	xor dx, dx
+	div bx
+	mov cx, dx
+	mov dx,ax
+	mov ah, 0Dh
+	int 10h
+
+	cmp al, 00H
+	jne NotLeftSideBlack2
+	
+	mov [DidPlayerWin], 2
+NotLeftSideBlack2:
+
+	pop cx
+	pop dx
+	pop di
+	pop bx
+	pop ax
+	
+	ret
+endp CheckForLeftSideBlackSecondPlayer
+
+proc CheckForLeftSideBlackFirstPlayer near
+	push ax
+	push bx
+	push di
+	push dx
+	push cx
+
+	mov ax, di
+	mov bx, 320
+	xor dx, dx
+	div bx
+	mov cx, dx
+	mov dx,ax
+	mov ah, 0Dh
+	int 10h
+
+	cmp al, 00H
+	jne NotLeftSideBlack
+	
+	mov [DidPlayerWin], 1
+NotLeftSideBlack:
+
+	pop cx
+	pop dx
+	pop di
+	pop bx
+	pop ax
+	
+	ret
+endp CheckForLeftSideBlackFirstPlayer
 
 proc CheckForRightSideBlack near
 	push ax
@@ -1215,6 +1372,10 @@ NotFirstPlayerS:
 	cmp ah, 1Eh
 	jne NotFirstPlayerA
 	sub di, 5
+	call CheckForLeftSideBlackFirstPlayer
+	cmp [DidPlayerWin], 0
+	jne Player1HitRed
+
 	jmp ContinueMoveFirstCar
 
 NotFirstPlayerA:
