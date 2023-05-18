@@ -19,6 +19,7 @@ GAME_BUTTON_NAME equ 'gamebutt.bmp'
 TRACK_NAME equ 'track.bmp'
 END_ROAD_NAME equ 'endroad.bmp'
 WINNER_SCREEN_NAME equ 'winner.bmp'
+EXIT_BUTTON_NAME equ 'exit.bmp'
 
 
 DATASEG
@@ -41,6 +42,7 @@ DATASEG
 	TrackName db TRACK_NAME, 0
 	EndRoadName db END_ROAD_NAME, 0
 	WinnerScreenName db WINNER_SCREEN_NAME, 0
+	ExitButtonName db EXIT_BUTTON_NAME, 0
 
 	IntroHandle dw ?
 	PlayersNamesHandle dw ?
@@ -50,6 +52,7 @@ DATASEG
 	TrackHandle dw ?
 	EndRoadHandle dw ?
 	WinnerScreenHandle dw ?
+	ExitButtonHandle dw ?
 	
 
 
@@ -229,12 +232,8 @@ start:
 
 	mov ax, @data
 	mov ds, ax
-mov ah, 1
-	int 16h
 
 
-	mov ah, 0
-	int 16h
 	call Game
 
 exit:
@@ -335,12 +334,14 @@ EndlessLoop1:
 mov cx, 4
 cont6:
 	call ShowWinnerName
+
+	call ShowExitButton
+	
 	inc cx
 	loop cont6
 	
 	ret
 endp Game
-
 
 ;===============================================
 ;====ShowWinnerName- shows the winner's name====
@@ -377,7 +378,7 @@ CopyLoopSecondPlayer:
 ContWinnerName:
 
 	mov dh, 5
-	mov dl, 7
+	mov dl, 8
 	mov bh, 0
 	mov ah, 2
 	int 10h
@@ -657,6 +658,29 @@ EndlessLoop:
 
 	ret
 endp IfError
+
+;=======================================================
+;====ShowExitButton- shows the button for rules========
+;=======================================================
+proc ShowExitButton near
+	push dx
+	push ax
+
+	mov dx, offset ExitButtonName
+	mov [BmpLeft],260
+	mov [BmpTop],140
+	mov [BmpColSize], 60
+	mov [BmpRowSize], 60
+
+	call OpenShowBmp
+	mov ax, [FileHandle]
+	mov [ExitButtonHandle], ax
+	
+	pop ax
+	pop dx
+	
+	ret
+endp ShowExitButton
 
 ;=======================================================
 ;====ShowRulesButton- shows the button for rules========
