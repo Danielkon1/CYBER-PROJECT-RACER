@@ -196,9 +196,9 @@ DATASEG
 	
 	;-------Player Inputs-------
 	FirstPlayerInputNotification db 'enter player one:$'
-	FirstPlayerName db 'XX123456X'
+	FirstPlayerName db 'XX------X'
 	SecondPlayerInputNotification db 'enter player two:$'
-	SecondPlayerName db 'XX123456X'
+	SecondPlayerName db 'XX------X'
 
 	;-------Draw Any Line Points-------
 	P1X dw ?
@@ -225,6 +225,8 @@ DATASEG
 	
 	PlayerName db 6 dup(?), '$'
 	WinnerNotification db 'The winner is: $'
+
+	IsExit db ?
 CODESEG
 
 
@@ -336,12 +338,40 @@ cont6:
 	call ShowWinnerName
 
 	call ShowExitButton
-	
+
+	call WaitTillExitClicked
+
+	cmp [IsExit], 1
+	je EndAll
+
 	inc cx
 	loop cont6
+
+EndAll:
 	
 	ret
 endp Game
+
+proc WaitTillExitClicked near
+	mov ax, 1
+	int 33h
+
+	mov ax, 3
+IsExitClicked:
+	int 33h
+
+	cmp bx, 1
+	jne IsExitClicked
+
+	shr cx, 1
+	cmp cx, 250
+	jl IsExitClicked
+	cmp dx, 130
+	jl IsExitClicked
+	
+	mov [isExit], 1
+	ret
+endp WaitTillExitClicked
 
 ;===============================================
 ;====ShowWinnerName- shows the winner's name====
@@ -667,10 +697,10 @@ proc ShowExitButton near
 	push ax
 
 	mov dx, offset ExitButtonName
-	mov [BmpLeft],260
-	mov [BmpTop],140
-	mov [BmpColSize], 60
-	mov [BmpRowSize], 60
+	mov [BmpLeft],250
+	mov [BmpTop],130
+	mov [BmpColSize], 70
+	mov [BmpRowSize], 70
 
 	call OpenShowBmp
 	mov ax, [FileHandle]
@@ -2179,7 +2209,7 @@ WaitTillPressOnPoint:
 	jg WaitTillPressOnPoint
 	
 	
-	mov si, dx 
+	mov si, dx
 	add si, [SquareSize]
 	cmp si , [Yclick]
 	jl WaitTillPressOnPoint
