@@ -9,17 +9,18 @@ MACRO PUT_CHAR   MY_CHAR
 ENDM 
 
 STACK 0ffh
-
-FILE_NAME_IN  equ 'intropic.bmp'
-INTRO_NAME equ 'intropic.bmp'
-PLAYERS_NAME equ 'plrnames.bmp'
-RULES_NAME equ 'rules.bmp'
-RULES_PAGE_NAME equ 'rulepage.bmp'
-GAME_BUTTON_NAME equ 'gamebutt.bmp'
-TRACK_NAME equ 'track.bmp'
-END_ROAD_NAME equ 'endroad.bmp'
-WINNER_SCREEN_NAME equ 'winner.bmp'
-EXIT_BUTTON_NAME equ 'exit.bmp'
+FILE_NAME_IN  equ 'pictures/intropic.bmp'
+INTRO_NAME equ 'pictures/intropic.bmp'
+PLAYERS_NAME equ 'pictures/plrnames.bmp'
+RULES_NAME equ 'pictures/rules.bmp'
+RULES_PAGE_NAME equ 'pictures/rulepage.bmp'
+GAME_BUTTON_NAME equ 'pictures/gamebutt.bmp'
+TRACK_NAME equ 'pictures/track.bmp'
+END_ROAD_NAME equ 'pictures/endroad.bmp'
+WINNER_SCREEN_NAME equ 'pictures/winner.bmp'
+EXIT_BUTTON_NAME equ 'pictures/exit.bmp'
+AGAIN_BUTTON_NAME equ 'pictures/again.bmp'
+LOGGING_NAME equ 'log.txt'
 
 
 DATASEG
@@ -43,6 +44,8 @@ DATASEG
 	EndRoadName db END_ROAD_NAME, 0
 	WinnerScreenName db WINNER_SCREEN_NAME, 0
 	ExitButtonName db EXIT_BUTTON_NAME, 0
+	AgainButtonName db AGAIN_BUTTON_NAME, 0
+	LoggingName db LOGGING_NAME, 0
 
 	IntroHandle dw ?
 	PlayersNamesHandle dw ?
@@ -53,6 +56,8 @@ DATASEG
 	EndRoadHandle dw ?
 	WinnerScreenHandle dw ?
 	ExitButtonHandle dw ?
+	AgainButtonHandle dw ?
+	LoggingHandle dw ?
 	
 
 
@@ -227,22 +232,17 @@ DATASEG
 	WinnerNotification db 'The winner is: $'
 
 	IsExit db ?
+	IsAgain db ?
 CODESEG
 
 
 start:
-
 	mov ax, @data
 	mov ds, ax
-
 
 	call Game
 
 exit:
-	xor ah, ah
-	int 16h
-	mov ah, 1
-	int 16h
 	
 	mov ax,2
 	int 10h
@@ -263,9 +263,9 @@ exit:
 ;====Game- contains whole game==========
 ;=======================================
 proc Game near
-	
-	call SetGraphic
+BeginGame:
 
+	call SetGraphic
 	call ShowMainIntro
 	cmp [ErrorFile],1
 	jne cont1
@@ -311,11 +311,12 @@ cont5:
 
 	call ShowWholeTrack
 
-	mov di, 320 * 28 + 80
+	mov [DidPlayerWin], 0
+	mov [SecondPlayerLocation], 320 * 28 + 80
 	call ShowSecondPlayerCar
 	mov [SecondPlayerLocation], di
 
-	mov di, 320 * 145 + 140
+	mov [FirstPlayerLocation], 320 * 145 + 140
 	call ShowFirstPlayerCar
 	mov [FirstPlayerLocation], di
 
@@ -333,26 +334,37 @@ EndlessLoop1:
 	jne cont6
 	call IfError
 
-mov cx, 4
+
 cont6:
 	call ShowWinnerName
 
 	call ShowExitButton
+	
+	call ShowAgainButton
 
-	call WaitTillExitClicked
+ExitOrAgain:
+	call WaitTillExitOrAgainClicked
+
+	mov ax, 2
+	int 33h
+
+	cmp [IsAgain], 1
+	je BeginGame
 
 	cmp [IsExit], 1
-	je EndAll
+	jne ExitOrAgain
 
-	inc cx
-	loop cont6
 
-EndAll:
 	
 	ret
 endp Game
 
-proc WaitTillExitClicked near
+proc WaitTillExitOrAgainClicked near
+	push ax
+	push cx
+	push bx
+	push dx
+
 	mov ax, 1
 	int 33h
 
@@ -364,20 +376,42 @@ IsExitClicked:
 	jne IsExitClicked
 
 	shr cx, 1
-	cmp cx, 250
-	jl IsExitClicked
 	cmp dx, 130
-	jl IsExitClicked
-	
+	jb IsExitClicked
+	cmp cx, 250
+	jae IsExitButton
+	cmp cx, 70
+	jbe IsAgainButton
+	jmp IsExitClicked
+
+
+IsExitButton:	
 	mov [isExit], 1
+	jmp EndWaitForExitOrAgain
+
+IsAgainButton:
+	mov [isAgain], 1
+
+
+EndWaitForExitOrAgain:
+	pop dx
+	pop bx
+	pop cx
+	pop ax
 	ret
-endp WaitTillExitClicked
+endp WaitTillExitOrAgainClicked
 
 ;===============================================
 ;====ShowWinnerName- shows the winner's name====
 ;===============================================
 proc ShowWinnerName near
-	
+	push si
+	push bx
+	push cx
+	push ax
+	push dx
+
+
 	mov si, 2
 	xor bx, bx
 	mov cx, 6
@@ -420,6 +454,11 @@ ContWinnerName:
 	lea dx, [PlayerName]
 	int 21h
 
+	pop dx
+	pop ax
+	pop cx
+	pop bx
+	pop si
 	ret
 endp ShowWinnerName
 
@@ -688,6 +727,29 @@ EndlessLoop:
 
 	ret
 endp IfError
+
+;=======================================================
+;====ShowAgainButton- shows the button for rules========
+;=======================================================
+proc ShowAgainButton near
+	push dx
+	push ax
+
+	mov dx, offset AgainButtonName
+	mov [BmpLeft],0
+	mov [BmpTop],130
+	mov [BmpColSize], 70
+	mov [BmpRowSize], 70
+
+	call OpenShowBmp
+	mov ax, [FileHandle]
+	mov [AgainButtonHandle], ax
+	
+	pop ax
+	pop dx
+	
+	ret
+endp ShowAgainButton
 
 ;=======================================================
 ;====ShowExitButton- shows the button for rules========
