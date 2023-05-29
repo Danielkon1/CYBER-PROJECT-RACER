@@ -87,6 +87,20 @@ DATASEG
 ;brown -13h
 ;light brown -14
 ;orange -17
+	ReplacementVehicle 		db   03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db   03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db   03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db   03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db   03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db   03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db   03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db   03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db   03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db   03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+
 	FirstPlayerCar 			db   13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h
 							db   13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h, 06h, 06h, 06h, 06h, 13h
 							db   13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h, 06h, 06h, 06h, 13h
@@ -220,11 +234,13 @@ DATASEG
 
 	FirstPlayerLocation dw ?
 	SecondPlayerLocation dw ?
+	PlayerNewLocation dw ?
 	
 	DidPlayerWin db ?
 	
 	PlayerName db 6 dup(?), '$'
 	WinnerNotification db 'The winner is: $'
+
 
 	IsExit db ?
 CODESEG
@@ -1405,6 +1421,8 @@ proc MoveFirstPlayerCar near
 	int 16h
 
 	jz exitMovePlayerOne
+	mov [PlayerNewLocation], si
+	call ShowBlankCar
 
 	mov ah, 0
 	int 16h
@@ -1482,9 +1500,10 @@ ContinueMoveFirstCar:
 	je Player1HitRed
 
 	push di
-	call ShowWholeTrack
-	mov di, [SecondPlayerLocation]
-	call ShowSecondPlayerCar
+;	mov [PlayerNewLocation], si
+;	call ShowBlankCar
+	;mov di, [SecondPlayerLocation]
+	;call ShowSecondPlayerCar
 	pop di
 	call ShowFirstPlayerCar
 	jmp exitMovePlayerOne
@@ -1507,6 +1526,29 @@ exitMovePlayerOne:
 
 	ret
 endp MoveFirstPlayerCar
+
+;================================================================
+;====ShowBlankCar- shows red car for second player========
+;================================================================
+proc ShowBlankCar near
+	push cx
+	push dx	
+	push di
+
+	lea cx, [ReplacementVehicle]
+	mov [matrix], cx
+	  
+	mov dx, 18   ; cols
+	mov cx, 13  ;rows
+	 
+	call PutMatrixInScreen
+
+	pop di
+	pop dx
+	pop cx
+
+	ret
+endp ShowBlankCar
 
 ;================================================================
 ;====ShowSecondPlayerCar- shows red car for second player========
