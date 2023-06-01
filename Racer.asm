@@ -328,17 +328,17 @@ cont5:
 	call ShowWholeTrack
 
 	mov [DidPlayerWin], 0
-	mov [SecondPlayerLocation], 320 * 28 + 80
+	;mov [SecondPlayerLocation], 320 * 28 + 80
+	mov di, 320 * 28 + 80
 	call ShowSecondPlayerCar
 	mov [SecondPlayerLocation], di
 
-	mov [FirstPlayerLocation], 320 * 145 + 140
+	mov di, 320 * 145 + 140
 	call ShowFirstPlayerCar
 	mov [FirstPlayerLocation], di
 
 
 EndlessLoop1:
-	
 	call MoveSecondPlayerCar
 	call MoveFirstPlayerCar
 
