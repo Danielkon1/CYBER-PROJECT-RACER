@@ -246,6 +246,7 @@ DATASEG
 	PlayerName db 6 dup(?), '$'
 	WinnerNotification db 'The winner is: $'
 
+	DropDownLog db 10
 
 	IsExit db ?
 	IsAgain db ?
@@ -354,6 +355,8 @@ EndlessLoop1:
 cont6:
 	call ShowWinnerName
 
+	call Logging
+
 	call ShowExitButton
 	
 	call ShowAgainButton
@@ -374,6 +377,70 @@ ExitOrAgain:
 	
 	ret
 endp Game
+
+proc OpenLogFile near
+	push ax
+	push dx
+
+	mov ah, 3Dh
+	mov al, 2
+	lea dx, [LoggingName]
+	int 21h
+	jne NotLogError
+	call IfError
+
+NotLogError:
+	mov [Logginghandle], ax
+
+	pop dx
+	pop ax
+	ret
+endp OpenLogFile
+
+proc WriteToLog near
+	push ax
+	push bx
+	push cx
+	push dx
+
+	mov ah, 40h
+	mov bx, [LoggingHandle]
+	mov cx, 1
+	lea dx, [DropDownLog]
+	int 21h
+
+	mov ah, 40h
+	mov cx, 6
+	lea dx, [PlayerName]
+	int 21h
+
+
+	pop dx
+	pop cx
+	pop bx
+	pop ax
+	ret
+endp WriteToLog
+
+proc CloseLogFile near
+	push ax
+	push bx
+
+	mov ah, 3Eh
+	mov bx, [LoggingHandle]
+	int 21h
+
+	pop bx
+	pop ax
+	ret
+endp CloseLogFile
+
+proc Logging near
+	call OpenLogFile
+	call WriteToLog
+	call CloseLogFile
+	ret
+endp Logging
 
 proc WaitTillExitOrAgainClicked near
 	push ax
@@ -1265,13 +1332,15 @@ proc MoveSecondPlayerCar near
 
 	mov si, di
 
-	mov ah, 1
-	int 16h
-
-	jz exitMovePlayerTwo
-
 	mov ah, 0
 	int 16h
+
+	;mov ah, 1
+	;int 16h
+
+	;jnz exitMovePlayerTwo
+	mov [PlayerNewLocation], si
+	call ShowBlankCar
 ;	mov ah, 1
 ;	int 16h
 
@@ -1328,7 +1397,7 @@ ContinueMoveSecondCar:
 	je Player2HitRed
 
 ;	cmp al, 00H
-;	je Player2HitRed
+;	je Player1HitRed
 
 ;check if top right hit red-
 	sub dx, 12
@@ -1346,7 +1415,6 @@ ContinueMoveSecondCar:
 	je Player2HitRed
 
 	push di
-	call ShowWholeTrack
 	mov di, [FirstPlayerLocation]
 	call ShowFirstPlayerCar
 	pop di
@@ -1479,15 +1547,15 @@ proc MoveFirstPlayerCar near
 
 	mov si, di
 
-	mov ah, 1
+	mov ah, 0
 	int 16h
 
-	jz exitMovePlayerOne
+	;jz exitMovePlayerOne
 	mov [PlayerNewLocation], si
 	call ShowBlankCar
 
-	mov ah, 0
-	int 16h
+	;mov ah, 1
+	;int 16h
 ;	mov ah, 1
 ;	int 16h
 
@@ -1562,10 +1630,8 @@ ContinueMoveFirstCar:
 	je Player1HitRed
 
 	push di
-;	mov [PlayerNewLocation], si
-;	call ShowBlankCar
-	;mov di, [SecondPlayerLocation]
-	;call ShowSecondPlayerCar
+	mov di, [SecondPlayerLocation]
+	call ShowSecondPlayerCar
 	pop di
 	call ShowFirstPlayerCar
 	jmp exitMovePlayerOne
@@ -1596,6 +1662,8 @@ proc ShowBlankCar near
 	push cx
 	push dx	
 	push di
+
+	mov di, [PlayerNewLocation]
 
 	lea cx, [ReplacementVehicle]
 	mov [matrix], cx
