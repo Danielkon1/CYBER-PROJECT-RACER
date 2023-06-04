@@ -107,11 +107,11 @@ DATASEG
 							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
 
 	FirstPlayerCar 			db   13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h
-							db   13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h, 06h, 06h, 06h, 06h, 13h
-							db   13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h, 06h, 06h, 06h, 13h
-							db   13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h, 06h, 06h, 13h
-							db   13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h, 06h, 13h
-							db   13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h, 13h
+							db   13h, 06h, 06h, 06h, 06h, 13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h
+							db   13h, 06h, 06h, 06h, 13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h
+							db   13h, 06h, 06h, 13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h
+							db   13h, 06h, 13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h
+							db   13h, 13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h
 							db   13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h
 							db   13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h
 							db   13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h
@@ -121,11 +121,11 @@ DATASEG
 							db	 03h, 03h, 03h, 03h, 13h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 13h, 03h, 03h, 03h, 03h
 
 	SecondPlayerCar 		db   13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h
-							db   13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h, 06h, 06h, 06h, 06h, 13h
-							db   13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h, 06h, 06h, 06h, 13h
-							db   13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h, 06h, 06h, 13h
-							db   13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h, 06h, 13h
-							db   13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h, 13h
+							db   13h, 06h, 06h, 06h, 06h, 13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h
+							db   13h, 06h, 06h, 06h, 13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h
+							db   13h, 06h, 06h, 13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h
+							db   13h, 06h, 13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h
+							db   13h, 13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h
 							db   13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h
 							db   13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h
 							db   13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h
@@ -329,8 +329,7 @@ cont5:
 	call ShowWholeTrack
 
 	mov [DidPlayerWin], 0
-	;mov [SecondPlayerLocation], 320 * 28 + 80
-	mov di, 320 * 28 + 80
+	mov di, 320 * 165 + 140
 	call ShowSecondPlayerCar
 	mov [SecondPlayerLocation], di
 
@@ -1297,26 +1296,6 @@ proc Create30x30TrackSquare near
 	ret
 endp Create30x30TrackSquare
 
-;PROC RandomGen16
-;    mov bx,[next_number]
-;    mov cx, 16
-;    dec cx
-;    mov ax,40h
-;    mov es,ax
-;    mov ax,[es:6Ch]
-;    xor ax,[number+bx]
-;    and ax,cx
-;    mov [random16],ax
-;    add [next_number],2
-;    add bx,2
-;    cmp [number+bx],'$'
-;    jne out30
-;    mov [next_number],0
-;out30:
-;    ret
-;ENDP RandomGen16
-
-
 ;=========================================================
 ;====MoveSecondPlayerCar- move car for second player========
 ;=========================================================
@@ -1729,241 +1708,9 @@ proc ShowFirstPlayerCar near
 endp ShowFirstPlayerCar
 
 
-;=========================================================
-;====DrawAnyLine- shows a line by using any 2 points======
-;=========================================================
-proc DrawAnyLine near
-	push ax
-	push bx
-	push si
-	push cx
-	push dx
-
-	mov ax, [P1X]
-	mov bx, [P2X]
-	cmp ax, bx
-	jne ContDrawLine1
-
-	mov si, [P2Y]
-	sub si, [P1Y]
-	mov cx, [P1X]
-	mov dx, [P1Y]
-	call DrawVerticalLine
-	jmp EndSpecialLine
-
-ContDrawLine1:
-	mov ax, [P1Y]
-	mov bx, [P2Y]
-	cmp ax, bx
-	jne ContDrawLine2
-
-	mov si, [P2X]
-	sub si, [P1X]
-	mov cx, [P1X]
-	mov dx, [P1Y]
-	call DrawHorizontalLine
-	jmp EndSpecialLine
-
-ContDrawLine2:
-	mov ax, [P2X]
-	sub ax, [P1X]
-	mov [DeltaX], ax
-
-	mov ax, [P2Y]
-	sub ax, [P1Y]
-	mov [DeltaY], ax
-
-	mov [ValueToAbsolute], ax
-	call AbsoluteValue
-	mov bx, [ValueToAbsolute]
-
-	mov ax, [DeltaX]
-	mov [ValueToAbsolute], ax
-	call AbsoluteValue
-	mov cx, [ValueToAbsolute]
-	
-	cmp cx, bx
-	jne ContDrawLine3
-
-	call DrawDiagonalLine
-	jmp EndSpecialLine
-
-ContDrawLine3:
-	cmp [DeltaX], 0
-	jg DeltaXLargerThan0
-	dec [DeltaX]
-	jmp ContDrawLine4
-
-DeltaXLargerThan0:
-	inc [DeltaX]
-
-ContDrawLine4:
-	cmp [DeltaY], 0
-	jg DeltaYLargerThan0
-	dec [DeltaY]
-	jmp ContDrawLine5
-
-DeltaYLargerThan0:
-	inc [DeltaY]
-
-ContDrawLine5:
-	mov cx, [DeltaX]
-	mov bx, [DeltaY]
-	cmp cx, bx
-	jl DeltaXIsSmallerThanDeltaY
-
-	xor dx, dx
-	mov ax, [DeltaX]
-	mov bx, [DeltaY]
-	div bx
-
-	mov si, ax
-	mov al, [LineFillColor]
-	mov cx, [P1X]
-	mov dx, [P1Y]
-	call DrawHorizontalLine
-
-	neg si
-	mov cx, [P2X]
-	mov dx, [P2Y]
-	call DrawHorizontalLine
-	
-	add [P2X], si
-	dec [P2Y]
-
-	neg si
-	add [P1X], si
-	inc [P1Y]
-
-	call DrawAnyLine
-	jmp EndSpecialLine
-
-DeltaXIsSmallerThanDeltaY:
-
-	xor dx, dx
-	mov ax, [DeltaY]
-	mov bx, [DeltaX]
-	div bx
-
-	mov si, ax
-	mov al, [LineFillColor]
-	mov cx, [P1X]
-	mov dx, [P1Y]
-	call DrawVerticalLine
-
-	neg si
-	mov cx, [P2X]
-	mov dx, [P2Y]
-	call DrawVerticalLine
-
-	add [P2Y], si
-	dec [P2X]
-
-	neg si
-	add [P1Y], si
-	inc [P1X]
-
-	call DrawAnyLine
-	
-	
-EndSpecialLine:
-	pop dx
-	pop cx
-	pop si
-	pop bx
-	pop ax
-
-	ret
-endp DrawAnyLine
-
-;=========================================================
-;====DrawDiagonalLine- draws a diagonal line==============
-;=========================================================
-proc DrawDiagonalLine near
-	push cx
-	push dx
-	push di
-	push bp
-	push cx
-
-	cmp [DeltaX], 0
-    jl NegDeltaX
-    mov [XMove], 1
-    jmp ContDrawDiagonal1
-
-NegDeltaX:
-    mov [XMove], -1
-
-ContDrawDiagonal1:
-    cmp [DeltaY], 0
-    jl NegDeltaY
-    mov [YMove], 1
-    jmp ContDrawDiagonal2
-
-NegDeltaY:
-    mov [YMove], -1
-
-ContDrawDiagonal2:
-    mov cx, [P1X]
-    mov dx, [P1Y]
-
-    mov di, [XMove]
-    mov bp, [YMove]
-
-	mov al, [LineFillColor]
-	mov ah, 0Ch
-ContDrawDiagonal3:
-    cmp cx, [P2X]
-    je EndDiagonalLine
-
-    int 10h
-
-    add cx, di
-    add dx, bp
-
-    jmp ContDrawDiagonal3
-
-EndDiagonalLine:
-	pop cx
-	pop bp
-	pop di
-	pop dx
-	pop cx
-
-    ret
-endp DrawDiagonalLine
-
-
-;=================================================================
-;====AbsoluteValue- calculates absolute value of a number=========
-;=================================================================
-proc AbsoluteValue near
-	push ax
-	push bx
-
-	mov bx, [ValueToAbsolute]
-	cmp bx, 0
-	jge ContAbsolute
-
-	mov ax, -1
-	mul bx
-
-	mov [ValueToAbsolute], ax
-
-ContAbsolute:
-
-	pop bx
-	pop ax
-
-	ret
-endp AbsoluteValue
-
-
-
-
 
 proc OpenShowBmp near
-	
+
 	 
 	call OpenBmpFile
 	cmp [ErrorFile],1
@@ -2087,37 +1834,6 @@ CopyNextColor:
 endp CopyBmpPalette
 
 
- 
- 
-proc DrawHorizontalLine	near
-	push si
-	push cx
-
-	cmp si, 0
-	jge DrawLine
-	neg si
-	sub cx, si
-
-DrawLine:
-	cmp si,0
-	jz ExitDrawLine	
-
-	mov al, [LineFillColor] 
-    mov ah,0ch	
-	int 10h    ; put pixel
-	 
-	
-	inc cx
-	dec si
-	jmp DrawLine
-	
-	
-ExitDrawLine:
-	pop cx
-    pop si
-	ret
-endp DrawHorizontalLine
-
 
 
 proc DrawVerticalLine	near
@@ -2152,73 +1868,7 @@ endp DrawVerticalLine
 
 
 
-; cx = col dx= row al = color si = height di = width 
-proc Rect
-	push cx
-	push di
-NextVerticalLine:	
-	
-	cmp di,0
-	jz @@EndRect
-	
-	cmp si,0
-	jz @@EndRect
-	call DrawVerticalLine
-	inc cx
-	dec di
-	jmp NextVerticalLine
-	
-	
-@@EndRect:
-	pop di
-	pop cx
-	ret
-endp Rect
 
-
-
-proc DrawSquare
-	push si
-	push ax
-	push cx
-	push dx
-	
-	mov al,[Color]
-	mov si,[SquareSize]  ; line Length
- 	mov cx,[Xp]
-	mov dx,[Yp]
-	call DrawHorizontalLine
-
-	 
-	
-	call DrawVerticalLine
-	 
-	
-	add dx ,si
-	dec dx
-	call DrawHorizontalLine
-	 
-	
-	
-	sub  dx ,si
-	inc dx
-	add cx,si
-	dec cx
-	call DrawVerticalLine
-	
-	
-	 pop dx
-	 pop cx
-	 pop ax
-	 pop si
-	 
-	ret
-endp DrawSquare
-
-
-
-
- 
    
 proc  SetGraphic
 	mov ax,13h   ; 320 X 200 
@@ -2229,9 +1879,6 @@ endp 	SetGraphic
 
  
 
- 
- 
- 
 
 
 proc ShowBMP 
