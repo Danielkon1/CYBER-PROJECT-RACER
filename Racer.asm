@@ -930,10 +930,10 @@ proc ShowGameButton near
 	push ax
 
 	mov dx, offset GameButtonName
-	mov [BmpLeft],270
-	mov [BmpTop],150
-	mov [BmpColSize], 50
-	mov [BmpRowSize], 50
+	mov [BmpLeft],100
+	mov [BmpTop],175
+	mov [BmpColSize], 100
+	mov [BmpRowSize], 25
 
 	call OpenShowBmp
 	mov ax, [FileHandle]
@@ -949,11 +949,38 @@ endp ShowGameButton
 ;====WaitForButtonToGame- waits for user to click button to game screen=========
 ;===============================================================================
 proc WaitForButtonToGame near
-	mov [Xclick], 295
-	mov [Yclick], 175
-	mov [squaresize], 25
-	call waittillgotclickonsomepoint
+	push ax
+	push cx
+	push bx
+	push dx
 
+
+
+	mov ax, 1
+	int 33h
+
+	mov ax, 3
+IsGameButtonClicked:
+	int 33h
+
+	cmp bx, 1
+	jne IsGameButtonClicked
+
+	shr cx, 1
+
+	cmp dx, 175
+	jb IsGameButtonClicked
+
+	cmp cx, 100
+	jb IsGameButtonClicked
+
+	cmp cx, 200
+	ja IsGameButtonClicked
+
+	pop dx
+	pop bx
+	pop cx
+	pop ax
 	ret
 endp WaitForButtonToGame
 
