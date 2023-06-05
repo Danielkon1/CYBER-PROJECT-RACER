@@ -339,6 +339,12 @@ cont5:
 
 
 EndlessLoop1:
+	mov ah, 1
+	int 16h
+	mov ah, 0
+	int 16h
+	jnz EndlessLoop1
+
 	call MoveSecondPlayerCar
 	call MoveFirstPlayerCar
 
@@ -401,6 +407,7 @@ proc WriteToLog near
 	push bx
 	push cx
 	push dx
+
 
 	mov ah, 40h
 	mov bx, [LoggingHandle]
@@ -1311,15 +1318,14 @@ proc MoveSecondPlayerCar near
 
 	mov si, di
 
-	mov ah, 0
-	int 16h
+	;mov ah, 0
+	;int 16h
 
 	;mov ah, 1
 	;int 16h
 
 	;jnz exitMovePlayerTwo
-	mov [PlayerNewLocation], si
-	call ShowBlankCar
+	
 ;	mov ah, 1
 ;	int 16h
 
@@ -1397,6 +1403,8 @@ ContinueMoveSecondCar:
 	mov di, [FirstPlayerLocation]
 	call ShowFirstPlayerCar
 	pop di
+	mov [PlayerNewLocation], si
+	call ShowBlankCar
 	call ShowSecondPlayerCar
 	jmp exitMovePlayerTwo
 
@@ -1526,12 +1534,11 @@ proc MoveFirstPlayerCar near
 
 	mov si, di
 
-	mov ah, 0
-	int 16h
+	;mov ah, 0
+	;int 16h
 
 	;jz exitMovePlayerOne
-	mov [PlayerNewLocation], si
-	call ShowBlankCar
+
 
 	;mov ah, 1
 	;int 16h
@@ -1612,6 +1619,8 @@ ContinueMoveFirstCar:
 	mov di, [SecondPlayerLocation]
 	call ShowSecondPlayerCar
 	pop di
+	mov [PlayerNewLocation], si
+	call ShowBlankCar
 	call ShowFirstPlayerCar
 	jmp exitMovePlayerOne
 
