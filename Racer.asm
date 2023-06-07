@@ -2,11 +2,6 @@
 IDEAL
 MODEL small
 
-MACRO PUT_CHAR   MY_CHAR
-	mov dl,MY_CHAR
-	mov ah,2
-	int 21h
-ENDM 
 
 STACK 0ffh
 FILE_NAME_IN  equ 'pictures/intropic.bmp'
@@ -214,26 +209,9 @@ DATASEG
 	PressToContinueNotification db 'Press Any Key To Continue...$'
 	
 	;-------Player Inputs-------
-	FirstPlayerInputNotification db 'enter player one:$'
 	FirstPlayerName db 'XX------X'
-	SecondPlayerInputNotification db 'enter player two:$'
 	SecondPlayerName db 'XX------X'
 
-	;-------Draw Any Line Points-------
-	P1X dw ?
-	P1Y dw ?
-	P2X dw ?
-	P2Y dw ?
-
-	DeltaX dw ?
-	DeltaY dw ?
-
-	XMove dw ?
-	YMove dw ?
-	DrawX dw ?
-	DrawY dw ?
-
-	ValueToAbsolute dw ?
 
 	LineFillColor db ?
 
@@ -244,12 +222,15 @@ DATASEG
 	DidPlayerWin db ?
 	
 	PlayerName db 6 dup(?), '$'
-	WinnerNotification db 'The winner is: $'
+	WinnerNotification db 'The Winner Is: $'
 
 	DropDownLog db 10
 
 	IsExit db ?
 	IsAgain db ?
+
+	ExitDuringGameMessage db 'To Exit Press Escape$'
+
 CODESEG
 
 
@@ -281,6 +262,7 @@ exit:
 ;=======================================
 proc Game near
 BeginGame:
+	call RestartGame
 
 	call SetGraphic
 	call ShowMainIntro
@@ -298,10 +280,8 @@ cont1:
 	call IfError
 
 cont2:
-	call PrintPlayerOneInputNotification
 	call FirstPlayerInputName
 	
-	call PrintPlayerTwoInputNotification
 	call SecondPlayerInputName
 	
 	call ShowRulesButton
@@ -328,7 +308,8 @@ cont5:
 
 	call ShowWholeTrack
 
-	mov [DidPlayerWin], 0
+	call PrintEscapeOption
+
 	mov di, 320 * 165 + 140
 	call ShowSecondPlayerCar
 	mov [SecondPlayerLocation], di
@@ -337,13 +318,16 @@ cont5:
 	call ShowFirstPlayerCar
 	mov [FirstPlayerLocation], di
 
-
 EndlessLoop1:
+
 	mov ah, 1
 	int 16h
 	mov ah, 0
 	int 16h
 	jnz EndlessLoop1
+
+	cmp ah, 1
+	je EndOfGame
 
 	call MoveSecondPlayerCar
 	call MoveFirstPlayerCar
@@ -378,10 +362,43 @@ ExitOrAgain:
 	cmp [IsExit], 1
 	jne ExitOrAgain
 
+EndOfGame:
 
-	
 	ret
 endp Game
+
+proc RestartGame near
+	mov [LineFillColor],0
+	mov [FirstPlayerLocation],0
+	mov [SecondPlayerLocation],0
+	mov [PlayerNewLocation],0
+	mov [DidPlayerWin],0
+	mov [IsExit],0
+	mov [IsAgain],0
+
+	ret
+endp RestartGame
+
+proc PrintEscapeOption near
+	push dx
+	push bx
+	push ax
+	
+	mov dh, 24
+	mov dl, 11
+	xor bh, bh
+	mov ah, 2
+	int 10h
+
+	lea dx, [ExitDuringGameMessage]
+	mov ah, 9
+	int 21h
+	
+	pop ax
+	pop bx
+	pop dx
+	ret
+endp PrintEscapeOption
 
 proc OpenLogFile near
 	push ax
@@ -695,31 +712,6 @@ proc ShowPlayersNamesScreen near
 	ret
 endp ShowPlayersNamesScreen
 
-;======================================================================================
-;====PrintPlayerOneInputNotification- prints input notification for first player=======
-;======================================================================================
-proc PrintPlayerOneInputNotification near
-	push dx
-	push bx
-	push ax
-	
-	mov dh, 8
-	mov dl, 0
-	xor bh, bh
-	mov ah, 2
-	int 10h
-
-	mov dx, offset FirstPlayerInputNotification
-	mov ah, 9
-	int 21h
-	
-	pop ax
-	pop bx
-	pop dx
-
-	ret
-endp PrintPlayerOneInputNotification
-
 
 ;==========================================================================
 ;====FirstPlayerInputName- takes input notification for first player======
@@ -730,7 +722,7 @@ proc FirstPlayerInputName near
 	push ax
 
 	mov dh, 10
-	mov dl, 0
+	mov dl, 4
 	xor bh, bh
 	mov ah, 2
 	int 10h
@@ -747,32 +739,6 @@ proc FirstPlayerInputName near
 	ret
 endp FirstPlayerInputName
 
-
-;======================================================================================
-;====PrintPlayerTwoInputNotification- prints input notification for second player======
-;======================================================================================
-proc PrintPlayerTwoInputNotification near
-	push dx
-	push bx
-	push ax
-	
-	mov dh, 8
-	mov dl, 21
-	xor bh, bh
-	mov ah, 2
-	int 10h
-
-	mov dx, offset SecondPlayerInputNotification
-	mov ah, 9
-	int 21h
-	
-	pop ax
-	pop bx
-	pop dx
-
-	ret
-endp PrintPlayerTwoInputNotification
-
 ;==========================================================================
 ;====SecondPlayerInputName- takes input notification for second player======
 ;==========================================================================
@@ -782,7 +748,7 @@ proc SecondPlayerInputName near
 	push ax
 
 	mov dh, 10
-	mov dl, 21
+	mov dl, 25
 	xor bh, bh
 	mov ah, 2
 	int 10h
@@ -978,6 +944,9 @@ IsGameButtonClicked:
 
 	cmp cx, 200
 	ja IsGameButtonClicked
+
+	mov ax, 2
+	int 33h
 
 	pop dx
 	pop bx
