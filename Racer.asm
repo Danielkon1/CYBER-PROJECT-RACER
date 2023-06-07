@@ -530,6 +530,8 @@ CopyLoopSecondPlayer:
 
 ContWinnerName:
 
+
+
 	mov dh, 5
 	mov dl, 8
 	mov bh, 0
