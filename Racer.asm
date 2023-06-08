@@ -2,7 +2,6 @@
 IDEAL
 MODEL small
 
-
 STACK 0ffh
 FILE_NAME_IN  equ 'pictures/intropic.bmp'
 INTRO_NAME equ 'pictures/intropic.bmp'
@@ -16,121 +15,11 @@ WINNER_SCREEN_NAME equ 'pictures/winner.bmp'
 EXIT_BUTTON_NAME equ 'pictures/exit.bmp'
 AGAIN_BUTTON_NAME equ 'pictures/again.bmp'
 LOGGING_NAME equ 'log.txt'
+LOGS_DIRECTORY equ 'logs/'
 
 
 DATASEG
-
-    OneBmpLine 	db 200 dup (0)  ; One Color line read buffer
-
-    ScrLine 	db 320 dup (0)  ; One Color line read buffer
-
-	;BMP File data
-	FileName 	db FILE_NAME_IN ,0
-	FileHandle	dw ?
-	Header 	    db 54 dup(0)
-	Palette 	db 400h dup (0)
-
-	IntroName db INTRO_NAME, 0
-	PlayersName db PLAYERS_NAME, 0
-	RulesName db RULES_NAME, 0
-	RulesPageName db RULES_PAGE_NAME, 0
-	GameButtonName db GAME_BUTTON_NAME, 0
-	TrackName db TRACK_NAME, 0
-	EndRoadName db END_ROAD_NAME, 0
-	WinnerScreenName db WINNER_SCREEN_NAME, 0
-	ExitButtonName db EXIT_BUTTON_NAME, 0
-	AgainButtonName db AGAIN_BUTTON_NAME, 0
-	LoggingName db LOGGING_NAME, 0
-
-	IntroHandle dw ?
-	PlayersNamesHandle dw ?
-	RulesHandle dw ?
-	RulesPageHandle dw ?
-	GameButtonHandle dw ?
-	TrackHandle dw ?
-	EndRoadHandle dw ?
-	WinnerScreenHandle dw ?
-	ExitButtonHandle dw ?
-	AgainButtonHandle dw ?
-	LoggingHandle dw ?
-	
-
-
-	BmpFileErrorMsg    	db 'Error At Opening Bmp File$'
-	ErrorFile           db 0
-	; array for mouse int 33 ax=09 (not a must) 64 bytes
-
-
-	Color db ?
-	Xclick dw ?
-	Yclick dw ?
-	Xp dw ?
-	Yp dw ?
-	SquareSize dw ?
-
-	BmpLeft dw ?
-	BmpTop dw ?
-	BmpColSize dw ?
-	BmpRowSize dw ?
-
-;black -0h
-;yellow- 3h
-;blue -4h
-;purzple -5h
-;teal -6h
-;white -7h
-;different white -8h
-;light blue -9h
-;green -10h
-;navy green -11h
-;khaki -12
-;brown -13h
-;light brown -14
-;orange -17
-	ReplacementVehicle 		db   03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
-							db   03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
-							db   03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
-							db   03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
-							db   03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
-							db   03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
-							db   03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
-							db   03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
-							db   03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
-							db   03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
-							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
-							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
-							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
-
-	FirstPlayerCar 			db   13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h
-							db   13h, 06h, 06h, 06h, 06h, 13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h
-							db   13h, 06h, 06h, 06h, 13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h
-							db   13h, 06h, 06h, 13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h
-							db   13h, 06h, 13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h
-							db   13h, 13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h
-							db   13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h
-							db   13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h
-							db   13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h
-							db   13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h
-							db	 03h, 03h, 13h, 06h, 06h, 06h, 13h, 03h, 03h, 03h, 03h, 13h, 06h, 06h, 06h, 13h, 03h, 03h
-							db	 03h, 03h, 03h, 13h, 06h, 13h, 03h, 03h, 03h, 03h, 03h, 03h, 13h, 06h, 13h, 03h, 03h, 03h
-							db	 03h, 03h, 03h, 03h, 13h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 13h, 03h, 03h, 03h, 03h
-
-	SecondPlayerCar 		db   13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h
-							db   13h, 06h, 06h, 06h, 06h, 13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h
-							db   13h, 06h, 06h, 06h, 13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h
-							db   13h, 06h, 06h, 13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h
-							db   13h, 06h, 13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h
-							db   13h, 13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h
-							db   13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h
-							db   13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h
-							db   13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h
-							db   13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h
-							db	 03h, 03h, 13h, 06h, 06h, 06h, 13h, 03h, 03h, 03h, 03h, 13h, 06h, 06h, 06h, 13h, 03h, 03h
-							db	 03h, 03h, 03h, 13h, 06h, 13h, 03h, 03h, 03h, 03h, 03h, 03h, 13h, 06h, 13h, 03h, 03h, 03h
-							db	 03h, 03h, 03h, 03h, 13h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 13h, 03h, 03h, 03h, 03h
-	
-
-
+;track matrixs-
 	VerticalRedTrack30		db	 01h, 01h, 01h, 01h, 01h
 							db	 01h, 01h, 01h, 01h, 01h
 							db	 01h, 01h, 01h, 01h, 01h
@@ -199,38 +88,121 @@ DATASEG
 							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
 							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
 							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+;cars-
+	ReplacementVehicle 		db   03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db   03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db   03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db   03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db   03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db   03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db   03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db   03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db   03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db   03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h
 
-		   
+	FirstPlayerCar 			db   13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h
+							db   13h, 06h, 06h, 06h, 06h, 13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h
+							db   13h, 06h, 06h, 06h, 13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h
+							db   13h, 06h, 06h, 13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h
+							db   13h, 06h, 13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h
+							db   13h, 13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h
+							db   13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h
+							db   13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h
+							db   13h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 04h, 13h
+							db   13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h
+							db	 03h, 03h, 13h, 06h, 06h, 06h, 13h, 03h, 03h, 03h, 03h, 13h, 06h, 06h, 06h, 13h, 03h, 03h
+							db	 03h, 03h, 03h, 13h, 06h, 13h, 03h, 03h, 03h, 03h, 03h, 03h, 13h, 06h, 13h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 13h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 13h, 03h, 03h, 03h, 03h
 
+	SecondPlayerCar 		db   13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h
+							db   13h, 06h, 06h, 06h, 06h, 13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h
+							db   13h, 06h, 06h, 06h, 13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h
+							db   13h, 06h, 06h, 13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h
+							db   13h, 06h, 13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h
+							db   13h, 13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h
+							db   13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h
+							db   13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h
+							db   13h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 01h, 13h
+							db   13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h, 13h
+							db	 03h, 03h, 13h, 06h, 06h, 06h, 13h, 03h, 03h, 03h, 03h, 13h, 06h, 06h, 06h, 13h, 03h, 03h
+							db	 03h, 03h, 03h, 13h, 06h, 13h, 03h, 03h, 03h, 03h, 03h, 03h, 13h, 06h, 13h, 03h, 03h, 03h
+							db	 03h, 03h, 03h, 03h, 13h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 03h, 13h, 03h, 03h, 03h, 03h
+	
+;show matrix on screen-
 	matrix dw ?
 
+;bmp source line-
+    ScrLine 	db 320 dup (0)  ; One Color line read buffer
+	   
+;bmp file data-
+	FileHandle	dw ?
+	Header 	    db 54 dup(0)
+	Palette 	db 400h dup (0)
+
+	IntroName db INTRO_NAME, 0
+	PlayersName db PLAYERS_NAME, 0
+	RulesName db RULES_NAME, 0
+	RulesPageName db RULES_PAGE_NAME, 0
+	GameButtonName db GAME_BUTTON_NAME, 0
+	TrackName db TRACK_NAME, 0
+	EndRoadName db END_ROAD_NAME, 0
+	WinnerScreenName db WINNER_SCREEN_NAME, 0
+	ExitButtonName db EXIT_BUTTON_NAME, 0
+	AgainButtonName db AGAIN_BUTTON_NAME, 0
+
+;show bmp data-
+	BmpLeft dw ?
+	BmpTop dw ?
+	BmpColSize dw ?
+	BmpRowSize dw ?
+
+;logging file name-
+	LoggingName db LOGS_DIRECTORY, 6 dup(' '), 0
+
+;file opening error-
+	FileOpenErrorMsg db 'Error At Opening File$'
+	ErrorFile db 0
+
+;wait till got clicked on some point-
+	Xclick dw ?
+	Yclick dw ?
+	SquareSize dw ?
 	GotClick db ?
-	;-------Press any key to continue-------
+
+
+
+
+;Press any key to continue opening screen-
 	PressToContinueNotification db 'Press Any Key To Continue...$'
 	
-	;-------Player Inputs-------
+;Player Inputs-
 	FirstPlayerName db 'XX------X'
 	SecondPlayerName db 'XX------X'
 
-
+;show line-
 	LineFillColor db ?
 
+;cars locations-
 	FirstPlayerLocation dw ?
 	SecondPlayerLocation dw ?
 	PlayerNewLocation dw ?
-	
+
+;contains winning car's number-
 	DidPlayerWin db ?
-	
+
+;contains winner's name and final screen message-
 	PlayerName db 6 dup(?), '$'
 	WinnerNotification db 'The Winner Is: $'
 
-	DropDownLog db 10
-
+;is one of final screen buttons pressed-
 	IsExit db ?
 	IsAgain db ?
 
+;contains message for leaving mid-game-
 	ExitDuringGameMessage db 'To Exit Press Escape$'
-
 CODESEG
 
 
@@ -272,7 +244,7 @@ BeginGame:
 
 cont1:
 	call ShowContinueNotificationToNames
-	call WaitForButtonToBePressed
+	call WaitForNamesButtonToBePressed
 
 	call ShowPlayersNamesScreen
 	cmp [ErrorFile],1
@@ -310,13 +282,13 @@ cont5:
 
 	call PrintEscapeOption
 
-	mov di, 320 * 165 + 140
-	call ShowSecondPlayerCar
-	mov [SecondPlayerLocation], di
-
 	mov di, 320 * 145 + 140
 	call ShowFirstPlayerCar
 	mov [FirstPlayerLocation], di
+
+	mov di, 320 * 165 + 140
+	call ShowSecondPlayerCar
+	mov [SecondPlayerLocation], di
 
 EndlessLoop1:
 
@@ -329,8 +301,8 @@ EndlessLoop1:
 	cmp ah, 1
 	je EndOfGame
 
-	call MoveSecondPlayerCar
 	call MoveFirstPlayerCar
+	call MoveSecondPlayerCar
 
 	cmp [DidPlayerWin], 0
 	je EndlessLoop1
@@ -344,7 +316,7 @@ EndlessLoop1:
 cont6:
 	call ShowWinnerName
 
-	call Logging
+	call CreateALogFile
 
 	call ShowExitButton
 	
@@ -366,8 +338,21 @@ EndOfGame:
 
 	ret
 endp Game
-
+;      _             _            __                   _         _                   
+;     | |           | |          / _|                 (_)       | |                  
+;  ___| |_ __ _ _ __| |_    ___ | |_   _ __ ___   __ _ _ _ __   | | ___   ___  _ __  
+; / __| __/ _` | '__| __|  / _ \|  _| | '_ ` _ \ / _` | | '_ \  | |/ _ \ / _ \| '_ \ 
+; \__ \ || (_| | |  | |_  | (_) | |   | | | | | | (_| | | | | | | | (_) | (_) | |_) |
+; |___/\__\__,_|_|   \__|  \___/|_|   |_| |_| |_|\__,_|_|_| |_| |_|\___/ \___/| .__/ 
+;                                                                             | |    
+;                                                                             |_|    (main loop actions)
+;===============================================================================================
+;====RestartGame- restarting all needed variables in case play again button is pressed==========
+;===============================================================================================
 proc RestartGame near
+	push si
+	push cx
+
 	mov [LineFillColor],0
 	mov [FirstPlayerLocation],0
 	mov [SecondPlayerLocation],0
@@ -376,260 +361,33 @@ proc RestartGame near
 	mov [IsExit],0
 	mov [IsAgain],0
 
+	mov si, 5
+	mov cx, 6
+RestartLogFile:
+	mov [LoggingName + si], ' '
+	inc si
+	loop RestartLogFile
+
+	pop cx
+	pop si
 	ret
 endp RestartGame
 
-proc PrintEscapeOption near
-	push dx
-	push bx
-	push ax
-	
-	mov dh, 24
-	mov dl, 11
-	xor bh, bh
-	mov ah, 2
+
+;==================================================
+;====SetGraphic- sets dos in graphic mode==========
+;==================================================
+proc SetGraphic near
+	mov ax,13h   
 	int 10h
-
-	lea dx, [ExitDuringGameMessage]
-	mov ah, 9
-	int 21h
-	
-	pop ax
-	pop bx
-	pop dx
 	ret
-endp PrintEscapeOption
-
-proc OpenLogFile near
-	push ax
-	push dx
-
-	mov ah, 3Dh
-	mov al, 2
-	lea dx, [LoggingName]
-	int 21h
-	jne NotLogError
-	call IfError
-
-NotLogError:
-	mov [Logginghandle], ax
-
-	pop dx
-	pop ax
-	ret
-endp OpenLogFile
-
-proc WriteToLog near
-	push ax
-	push bx
-	push cx
-	push dx
-
-
-	mov ah, 40h
-	mov bx, [LoggingHandle]
-	mov cx, 1
-	lea dx, [DropDownLog]
-	int 21h
-
-	mov ah, 40h
-	mov cx, 6
-	lea dx, [PlayerName]
-	int 21h
-
-
-	pop dx
-	pop cx
-	pop bx
-	pop ax
-	ret
-endp WriteToLog
-
-proc CloseLogFile near
-	push ax
-	push bx
-
-	mov ah, 3Eh
-	mov bx, [LoggingHandle]
-	int 21h
-
-	pop bx
-	pop ax
-	ret
-endp CloseLogFile
-
-proc Logging near
-	call OpenLogFile
-	call WriteToLog
-	call CloseLogFile
-	ret
-endp Logging
-
-proc WaitTillExitOrAgainClicked near
-	push ax
-	push cx
-	push bx
-	push dx
-
-	mov ax, 1
-	int 33h
-
-	mov ax, 3
-IsExitClicked:
-	int 33h
-
-	cmp bx, 1
-	jne IsExitClicked
-
-	shr cx, 1
-	cmp dx, 130
-	jb IsExitClicked
-	cmp cx, 250
-	jae IsExitButton
-	cmp cx, 70
-	jbe IsAgainButton
-	jmp IsExitClicked
-
-
-IsExitButton:	
-	mov [isExit], 1
-	jmp EndWaitForExitOrAgain
-
-IsAgainButton:
-	mov [isAgain], 1
-
-
-EndWaitForExitOrAgain:
-	pop dx
-	pop bx
-	pop cx
-	pop ax
-	ret
-endp WaitTillExitOrAgainClicked
-
-;===============================================
-;====ShowWinnerName- shows the winner's name====
-;===============================================
-proc ShowWinnerName near
-	push si
-	push bx
-	push cx
-	push ax
-	push dx
-
-
-	mov si, 2
-	xor bx, bx
-	mov cx, 6
-
-	cmp [DidPlayerWin], 1
-	jne NotFirstPlayerWin
-	
-CopyLoopFirstPlayer:
-	mov al, [FirstPlayerName + si]
-	mov [PlayerName + bx], al
-
-	inc si
-	inc bx
-	loop CopyLoopFirstPlayer
-
-	jmp ContWinnerName
-
-NotFirstPlayerWin:
-
-CopyLoopSecondPlayer:
-	mov al, [SecondPlayerName + si]
-	mov [PlayerName + bx], al
-
-	inc si
-	inc bx
-	loop CopyLoopSecondPlayer
-
-ContWinnerName:
-
-
-
-	mov dh, 5
-	mov dl, 8
-	mov bh, 0
-	mov ah, 2
-	int 10h
-
-	lea dx, [WinnerNotification]
-	mov ah, 9
-	int 21h
-
-	lea dx, [PlayerName]
-	int 21h
-
-	pop dx
-	pop ax
-	pop cx
-	pop bx
-	pop si
-	ret
-endp ShowWinnerName
-
-;===============================================
-;====ShowWholeTrack- shows whole track==========
-;===============================================
-proc ShowWholeTrack near
-	push ax
-	push bx
-	push si
-	push di
-	push bp
-	
-	call ShowTrackScreen
-;	cmp [ErrorFile],1
-;	jne ContTrack
-;	call IfError
-
-;ContTrack:
-
-	call CreateTrack
-
-	pop bp
-	pop di
-	pop si
-	pop bx
-	pop ax
-
-	ret
-endp ShowWholeTrack
-
-
-;===============================================
-;====ShowWinnerScreen- shows winner screen======
-;===============================================
-proc ShowWinnerScreen near
-	push dx
-	push ax
-
-	mov dx, offset WinnerScreenName
-	mov [BmpLeft],0
-	mov [BmpTop],0
-	mov [BmpColSize], 320
-	mov [BmpRowSize] ,200
-
-	call OpenShowBmp
-	mov ax, [FileHandle]
-	mov [WinnerScreenHandle], ax
-
-	pop ax
-	pop dx
-
-	ret
-endp ShowWinnerScreen
-
-
+endp SetGraphic
 
 ;===============================================
 ;====ShowMainIntro- shows start picture=========
 ;===============================================
 proc ShowMainIntro near
 	push dx
-	push ax
 
 	mov dx, offset IntroName
 	mov [BmpLeft],0
@@ -638,15 +396,30 @@ proc ShowMainIntro near
 	mov [BmpRowSize],200
 
 	call OpenShowBmp
-	mov ax, [FileHandle]
-	mov [introhandle], ax
 
-	pop ax
 	pop dx
 
 	ret
 endp ShowMainIntro
 
+;===============================================
+;====IfError- error message for bmp files=======
+;===============================================
+proc IfError near
+	push dx
+	push ax
+
+	mov dx, offset FileOpenErrorMsg
+	mov ah, 9
+	int 21h
+EndlessLoop:
+	jmp Endlessloop
+
+	pop ax
+	pop dx
+
+	ret
+endp IfError
 
 ;===========================================================================================
 ;====ShowContinueNotificationToNames- show notification to continue to names screen=========
@@ -673,11 +446,10 @@ proc ShowContinueNotificationToNames near
 	ret
 endp ShowContinueNotificationToNames
 
-
 ;=======================================================================
-;====WaitForButtonToBePressed- waits for any button to be pressed=======
+;====WaitForNamesButtonToBePressed- waits for any button to be pressed=======
 ;=======================================================================
-proc WaitForButtonToBePressed near
+proc WaitForNamesButtonToBePressed near
 	push ax
 
 	xor ah, ah
@@ -686,15 +458,13 @@ proc WaitForButtonToBePressed near
 	pop ax
 
 	ret
-endp WaitForButtonToBePressed
-
+endp WaitForNamesButtonToBePressed
 
 ;========================================================================
 ;====ShowPlayersNamesScreen- shows the screen for player's names=========
 ;========================================================================
 proc ShowPlayersNamesScreen near
 	push dx
-	push ax
 
 	mov dx, offset PlayersName
 	mov [BmpLeft],0
@@ -703,15 +473,11 @@ proc ShowPlayersNamesScreen near
 	mov [BmpRowSize], 200
 
 	call OpenShowBmp
-	mov ax, [FileHandle]
-	mov [PlayersNamesHandle], ax
 	
-	pop ax
 	pop dx
 	
 	ret
 endp ShowPlayersNamesScreen
-
 
 ;==========================================================================
 ;====FirstPlayerInputName- takes input notification for first player======
@@ -765,78 +531,11 @@ proc SecondPlayerInputName near
 	ret
 endp SecondPlayerInputName
 
-
-;===============================================
-;====IfError- error message for bmp files=======
-;===============================================
-proc IfError near
-	push dx
-	push ax
-
-	mov dx, offset BmpFileErrorMsg
-	mov ah, 9
-	int 21h
-EndlessLoop:
-	jmp Endlessloop
-
-	pop ax
-	pop dx
-
-	ret
-endp IfError
-
-;=======================================================
-;====ShowAgainButton- shows the button for rules========
-;=======================================================
-proc ShowAgainButton near
-	push dx
-	push ax
-
-	mov dx, offset AgainButtonName
-	mov [BmpLeft],0
-	mov [BmpTop],130
-	mov [BmpColSize], 70
-	mov [BmpRowSize], 70
-
-	call OpenShowBmp
-	mov ax, [FileHandle]
-	mov [AgainButtonHandle], ax
-	
-	pop ax
-	pop dx
-	
-	ret
-endp ShowAgainButton
-
-;=======================================================
-;====ShowExitButton- shows the button for rules========
-;=======================================================
-proc ShowExitButton near
-	push dx
-	push ax
-
-	mov dx, offset ExitButtonName
-	mov [BmpLeft],250
-	mov [BmpTop],130
-	mov [BmpColSize], 70
-	mov [BmpRowSize], 70
-
-	call OpenShowBmp
-	mov ax, [FileHandle]
-	mov [ExitButtonHandle], ax
-	
-	pop ax
-	pop dx
-	
-	ret
-endp ShowExitButton
-
 ;=======================================================
 ;====ShowRulesButton- shows the button for rules========
 ;=======================================================
 proc ShowRulesButton near
 	push dx
-	push ax
 
 	mov dx, offset RulesName
 	mov [BmpLeft],260
@@ -845,10 +544,7 @@ proc ShowRulesButton near
 	mov [BmpRowSize], 60
 
 	call OpenShowBmp
-	mov ax, [FileHandle]
-	mov [RulesHandle], ax
 	
-	pop ax
 	pop dx
 	
 	ret
@@ -871,7 +567,6 @@ endp WaitForButtonToRules
 ;=================================================================================
 proc ShowRulesScreen near
 	push dx
-	push ax
 
 	mov dx, offset RulesPageName
 	mov [BmpLeft],0
@@ -880,22 +575,17 @@ proc ShowRulesScreen near
 	mov [BmpRowSize] ,200
 
 	call OpenShowBmp
-	mov ax, [FileHandle]
-	mov [RulesPageHandle], ax
 
-	pop ax
 	pop dx
 	
 	ret
 endp ShowRulesScreen
-
 
 ;=======================================================
 ;====ShowGameButton- shows the button for game==========
 ;=======================================================
 proc ShowGameButton near
 	push dx
-	push ax
 
 	mov dx, offset GameButtonName
 	mov [BmpLeft],100
@@ -904,10 +594,7 @@ proc ShowGameButton near
 	mov [BmpRowSize], 25
 
 	call OpenShowBmp
-	mov ax, [FileHandle]
-	mov [GameButtonHandle], ax
 	
-	pop ax
 	pop dx
 	
 	ret
@@ -922,8 +609,6 @@ proc WaitForButtonToGame near
 	push bx
 	push dx
 
-
-
 	mov ax, 1
 	int 33h
 
@@ -933,9 +618,7 @@ IsGameButtonClicked:
 
 	cmp bx, 1
 	jne IsGameButtonClicked
-
 	shr cx, 1
-
 	cmp dx, 175
 	jb IsGameButtonClicked
 
@@ -955,12 +638,529 @@ IsGameButtonClicked:
 	ret
 endp WaitForButtonToGame
 
+;===============================================
+;====ShowWholeTrack- shows whole track==========
+;===============================================
+proc ShowWholeTrack near
+	push ax
+	push bx
+	push si
+	push di
+	push bp
+	
+	call ShowTrackScreen
+
+	call CreateTrack
+
+	pop bp
+	pop di
+	pop si
+	pop bx
+	pop ax
+
+	ret
+endp ShowWholeTrack
+
+;====================================================================================
+;====PrintEscapeOption- prints message that says that you can exit mid-game==========
+;====================================================================================
+proc PrintEscapeOption near
+	push dx
+	push bx
+	push ax
+	
+	mov dh, 24
+	mov dl, 11
+	xor bh, bh
+	mov ah, 2
+	int 10h
+
+	lea dx, [ExitDuringGameMessage]
+	mov ah, 9
+	int 21h
+	
+	pop ax
+	pop bx
+	pop dx
+	ret
+endp PrintEscapeOption
+
+;================================================================
+;====ShowFirstPlayerCar- shows blue car for first player=========
+;================================================================
+proc ShowFirstPlayerCar near
+	push cx
+	push dx	
+	push di
+
+	lea cx, [FirstPlayerCar]
+	mov [matrix], cx
+	  
+	mov dx, 18   ; cols
+	mov cx, 13  ;rows
+	 
+	call PutMatrixInScreen
+
+	pop di
+	pop dx
+	pop cx
+
+	ret
+endp ShowFirstPlayerCar
+
+;================================================================
+;====ShowSecondPlayerCar- shows red car for second player========
+;================================================================
+proc ShowSecondPlayerCar near
+	push cx
+	push dx	
+	push di
+
+	lea cx, [SecondPlayerCar]
+	mov [matrix], cx
+	  
+	mov dx, 18   ; cols
+	mov cx, 13  ;rows
+	 
+	call PutMatrixInScreen
+
+	pop di
+	pop dx
+	pop cx
+
+	ret
+endp ShowSecondPlayerCar
+
+;=========================================================
+;====MoveSecondPlayerCar- move car for second player========
+;=========================================================
+proc MoveSecondPlayerCar near
+	push ax
+	push bx
+	push cx
+	push dx
+	push si
+	push di
+
+	mov di, [SecondPlayerLocation]
+
+	mov si, di
+
+	cmp ah, 48h
+	jne NotSecondPlayerW
+	sub di, 320 * 5
+	jmp ContinueMoveSecondCar
+
+NotSecondPlayerW:
+	cmp ah, 50h
+	jne NotSecondPlayerS
+	add di, 320 * 5
+	jmp ContinueMoveSecondCar
+
+NotSecondPlayerS:
+	cmp ah, 4Bh
+	jne NotSecondPlayerA
+	sub di, 5
+	call CheckForLeftSideBlackSecondPlayer
+	cmp [DidPlayerWin], 0
+	jne Player2HitRed
+
+	jmp ContinueMoveSecondCar
+
+NotSecondPlayerA:
+	cmp ah, 4Dh
+	jne ExitMovePlayerTwo
+	add di, 5
+	call CheckForRightSideBlack
+	je Player2HitRed
+
+ContinueMoveSecondCar:
+;check if top left hit red-
+	mov ax, di
+	mov bx, 320
+	xor dx, dx
+	div bx
+	
+	mov cx, dx
+	mov dx,ax
+	mov ah, 0Dh
+	int 10h
+	cmp al, 01H
+	je Player2HitRed
+
+;check if bottom right hit red-
+	add cx,17
+	add dx,12
+	mov ah, 0Dh
+	int 10h
+	cmp al, 01H
+	je Player2HitRed
+
+;check if top right hit red-
+	sub dx, 12
+	mov ah, 0Dh
+	int 10h
+	cmp al, 01H
+	je Player2HitRed
+
+;check if bottom left hit red-
+	add dx, 12
+	sub cx, 17
+	mov ah, 0Dh
+	int 10h
+	cmp al, 01H
+	je Player2HitRed
+
+	push di
+	mov di, [FirstPlayerLocation]
+	call ShowFirstPlayerCar
+	pop di
+	mov [PlayerNewLocation], si
+	call ShowBlankCar
+	call ShowSecondPlayerCar
+	jmp exitMovePlayerTwo
+
+Player2HitRed:
+	mov di, si
+
+exitMovePlayerTwo:
+	mov [SecondPlayerLocation], di
+
+	pop di
+	pop si
+	pop dx
+	pop cx
+	pop bx
+	pop ax
+
+	ret
+endp MoveSecondPlayerCar
+
+;=========================================================
+;====MoveFirstPlayerCar- move car for first player========
+;=========================================================
+proc MoveFirstPlayerCar near
+	push ax
+	push bx
+	push cx
+	push dx
+	push si
+	push di
+
+	mov di, [FirstPlayerLocation]
+
+	mov si, di
+
+	cmp ah, 11h
+	jne NotFirstPlayerW
+	sub di, 320 * 5
+	jmp ContinueMoveFirstCar
+
+NotFirstPlayerW:
+	cmp ah, 1Fh
+	jne NotFirstPlayerS
+	add di, 320 * 5
+	jmp ContinueMoveFirstCar
+
+NotFirstPlayerS:
+	cmp ah, 1Eh
+	jne NotFirstPlayerA
+	sub di, 5
+	call CheckForLeftSideBlackFirstPlayer
+	cmp [DidPlayerWin], 0
+	jne Player1HitRed
+
+	jmp ContinueMoveFirstCar
+
+NotFirstPlayerA:
+	cmp ah, 20h
+	jne ExitMovePlayerOne
+	add di, 5
+	call CheckForRightSideBlack
+	je Player1HitRed
+
+ContinueMoveFirstCar:
+;check if top left hit red-
+	mov ax, di
+	mov bx, 320
+	xor dx, dx
+	div bx
+	
+	mov cx, dx
+	mov dx,ax
+	mov ah, 0Dh
+	int 10h
+	cmp al, 01H
+	je Player1HitRed
+
+;check if bottom right hit red-
+	add cx,17
+	add dx,12
+	mov ah, 0Dh
+	int 10h
+	cmp al, 01H
+	je Player1HitRed
+
+;check if top right hit red-
+	sub dx, 12
+	mov ah, 0Dh
+	int 10h
+	cmp al, 01H
+	je Player1HitRed
+
+;check if bottom left hit red-
+	add dx, 12
+	sub cx, 17
+	mov ah, 0Dh
+	int 10h
+	cmp al, 01H
+	je Player1HitRed
+
+	push di
+	mov di, [SecondPlayerLocation]
+	call ShowSecondPlayerCar
+	pop di
+	mov [PlayerNewLocation], si
+	call ShowBlankCar
+	call ShowFirstPlayerCar
+	jmp exitMovePlayerOne
+
+Player1HitRed:
+	mov di, si
+
+exitMovePlayerOne:
+	mov [FirstPlayerLocation], di
+
+	pop di
+	pop si
+	pop dx
+	pop cx
+	pop bx
+	pop ax
+
+	ret
+endp MoveFirstPlayerCar
+
+;===============================================
+;====ShowWinnerScreen- shows winner screen======
+;===============================================
+proc ShowWinnerScreen near
+	push dx
+
+	mov dx, offset WinnerScreenName
+	mov [BmpLeft],0
+	mov [BmpTop],0
+	mov [BmpColSize], 320
+	mov [BmpRowSize] ,200
+
+	call OpenShowBmp
+
+	pop dx
+
+	ret
+endp ShowWinnerScreen
+
+;===============================================
+;====ShowWinnerName- shows the winner's name====
+;===============================================
+proc ShowWinnerName near
+	push si
+	push bx
+	push cx
+	push ax
+	push dx
+
+	mov si, 2
+	xor bx, bx
+	mov cx, 6
+
+	cmp [DidPlayerWin], 1
+	jne CopyLoopSecondPlayer
+	
+CopyLoopFirstPlayer:
+	mov al, [FirstPlayerName + si]
+	mov [PlayerName + bx], al
+
+	inc si
+	inc bx
+	loop CopyLoopFirstPlayer
+	jmp ContWinnerName
+
+CopyLoopSecondPlayer:
+	mov al, [SecondPlayerName + si]
+	mov [PlayerName + bx], al
+
+	inc si
+	inc bx
+	loop CopyLoopSecondPlayer
+
+ContWinnerName:
+	mov dh, 5
+	mov dl, 8
+	mov bh, 0
+	mov ah, 2
+	int 10h
+
+	lea dx, [WinnerNotification]
+	mov ah, 9
+	int 21h
+
+	lea dx, [PlayerName]
+	int 21h
+
+	pop dx
+	pop ax
+	pop cx
+	pop bx
+	pop si
+	ret
+endp ShowWinnerName
+
+;====================================================================
+;====CreateALogFile- Creates the file with the winner's name=========
+;====================================================================
+proc CreateALogFile near
+	push si
+	push bx
+	push cx
+	push ax
+	push dx
+
+	mov si, 5
+	xor bx, bx
+	mov cx, 6
+
+CreateLogFileLoop:
+	mov dl, [PlayerName + bx]
+	cmp dl, 0Dh
+	je EndCreateLogLoop
+	mov [LoggingName + si], dl
+	inc si
+	inc bx
+	loop CreateLogFileLoop
+
+EndCreateLogLoop:
+	mov cx, 0
+	lea dx, [LoggingName]
+	mov ah, 3Ch
+	int 21h
+	
+	jnc ContinueCreateLog
+	call IfError
+
+ContinueCreateLog:
+	mov [FileHandle], ax
+
+	mov bx, [FileHandle]
+	mov ah, 3Eh
+	int 21h
+
+	pop dx
+	pop ax
+	pop cx
+	pop bx
+	pop si
+	ret
+endp CreateALogFile
+
+;=======================================================
+;====ShowExitButton- shows the button for rules========
+;=======================================================
+proc ShowExitButton near
+	push dx
+
+	mov dx, offset ExitButtonName
+	mov [BmpLeft],250
+	mov [BmpTop],130
+	mov [BmpColSize], 70
+	mov [BmpRowSize], 70
+
+	call OpenShowBmp
+	
+	pop dx
+	
+	ret
+endp ShowExitButton
+
+;=======================================================
+;====ShowAgainButton- shows the button for rules========
+;=======================================================
+proc ShowAgainButton near
+	push dx
+
+	mov dx, offset AgainButtonName
+	mov [BmpLeft],0
+	mov [BmpTop],130
+	mov [BmpColSize], 70
+	mov [BmpRowSize], 70
+
+	call OpenShowBmp
+	
+	pop dx
+	
+	ret
+endp ShowAgainButton
+
+;====================================================================================================
+;====WaitTillExitOrAgainClicked- waits until either exit or play again buttons were pressed==========
+;====================================================================================================
+proc WaitTillExitOrAgainClicked near
+	push ax
+	push cx
+	push bx
+	push dx
+
+	mov ax, 1
+	int 33h
+
+	mov ax, 3
+IsExitClicked:
+	int 33h
+
+	cmp bx, 1
+	jne IsExitClicked
+
+	shr cx, 1
+	cmp dx, 130
+	jb IsExitClicked
+	cmp cx, 250
+	jae IsExitButton
+	cmp cx, 70
+	jbe IsAgainButton
+	jmp IsExitClicked
+
+
+IsExitButton:	
+	mov [isExit], 1
+	jmp EndWaitForExitOrAgain
+
+IsAgainButton:
+	mov [isAgain], 1
+
+
+EndWaitForExitOrAgain:
+	pop dx
+	pop bx
+	pop cx
+	pop ax
+	ret
+endp WaitTillExitOrAgainClicked
+
+
+;                 _          __                   _         _                   
+;                | |        / _|                 (_)       | |                  
+;   ___ _ __   __| |   ___ | |_   _ __ ___   __ _ _ _ __   | | ___   ___  _ __  
+;  / _ \ '_ \ / _` |  / _ \|  _| | '_ ` _ \ / _` | | '_ \  | |/ _ \ / _ \| '_ \ 
+; |  __/ | | | (_| | | (_) | |   | | | | | | (_| | | | | | | | (_) | (_) | |_) |
+;  \___|_| |_|\__,_|  \___/|_|   |_| |_| |_|\__,_|_|_| |_| |_|\___/ \___/| .__/ 
+;                                                                        | |    
+;                                                                        |_|    
+
 ;===============================================================
 ;====ShowTrackScreen- shows the main track for the race=========
 ;===============================================================
 proc ShowTrackScreen near
 	push dx
-	push ax
 
 	mov dx, offset EndRoadName
 	mov [BmpLeft],0
@@ -969,10 +1169,7 @@ proc ShowTrackScreen near
 	mov [BmpRowSize], 200
 
 	call OpenShowBmp
-	mov ax, [FileHandle]
-	mov [EndRoadHandle], ax
-	
-	pop ax
+
 	pop dx
 	
 	ret
@@ -1301,130 +1498,9 @@ proc Create30x30TrackSquare near
 	ret
 endp Create30x30TrackSquare
 
-;=========================================================
-;====MoveSecondPlayerCar- move car for second player========
-;=========================================================
-proc MoveSecondPlayerCar near
-	push ax
-	push bx
-	push cx
-	push dx
-	push si
-	push di
-
-	mov di, [SecondPlayerLocation]
-
-	mov si, di
-
-	;mov ah, 0
-	;int 16h
-
-	;mov ah, 1
-	;int 16h
-
-	;jnz exitMovePlayerTwo
-	
-;	mov ah, 1
-;	int 16h
-
-	cmp ah, 48h
-	jne NotSecondPlayerW
-	sub di, 320 * 5
-	jmp ContinueMoveSecondCar
-
-NotSecondPlayerW:
-	cmp ah, 50h
-	jne NotSecondPlayerS
-	add di, 320 * 5
-	jmp ContinueMoveSecondCar
-
-NotSecondPlayerS:
-	cmp ah, 4Bh
-	jne NotSecondPlayerA
-	sub di, 5
-	call CheckForLeftSideBlackSecondPlayer
-	cmp [DidPlayerWin], 0
-	jne Player2HitRed
-
-	jmp ContinueMoveSecondCar
-
-NotSecondPlayerA:
-	cmp ah, 4Dh
-	jne ExitMovePlayerTwo
-	add di, 5
-	call CheckForRightSideBlack
-	je Player2HitRed
-
-ContinueMoveSecondCar:
-;check if top left hit red-
-	mov ax, di
-	mov bx, 320
-	xor dx, dx
-	div bx
-	
-	mov cx, dx
-	mov dx,ax
-	mov ah, 0Dh
-	int 10h
-	cmp al, 01H
-	je Player2HitRed
-;	cmp al, 00H
-;	je PlayerOneWon
-
-;check if bottom right hit red-
-	add cx,17
-	add dx,12
-	mov ah, 0Dh
-	int 10h
-	cmp al, 01H
-	je Player2HitRed
-
-;	cmp al, 00H
-;	je Player1HitRed
-
-;check if top right hit red-
-	sub dx, 12
-	mov ah, 0Dh
-	int 10h
-	cmp al, 01H
-	je Player2HitRed
-
-;check if bottom left hit red-
-	add dx, 12
-	sub cx, 17
-	mov ah, 0Dh
-	int 10h
-	cmp al, 01H
-	je Player2HitRed
-
-	push di
-	mov di, [FirstPlayerLocation]
-	call ShowFirstPlayerCar
-	pop di
-	mov [PlayerNewLocation], si
-	call ShowBlankCar
-	call ShowSecondPlayerCar
-	jmp exitMovePlayerTwo
-
-;PlayerOneWon:
-;	mov [DidPlayerWin], 1
-
-Player2HitRed:
-	mov di, si
-
-exitMovePlayerTwo:
-	mov [SecondPlayerLocation], di
-
-	pop di
-	pop si
-	pop dx
-	pop cx
-	pop bx
-	pop ax
-
-	ret
-endp MoveSecondPlayerCar
-
+;==================================================================================================
+;====CheckForLeftSideBlackSecondPlayer- Checks if second player hit black on left (he won)=========
+;==================================================================================================
 proc CheckForLeftSideBlackSecondPlayer near
 	push ax
 	push bx
@@ -1456,6 +1532,9 @@ NotLeftSideBlack2:
 	ret
 endp CheckForLeftSideBlackSecondPlayer
 
+;================================================================================================
+;====CheckForLeftSideBlackFirstPlayer- Checks if first player hit black on left (he won)=========
+;================================================================================================
 proc CheckForLeftSideBlackFirstPlayer near
 	push ax
 	push bx
@@ -1487,6 +1566,9 @@ NotLeftSideBlack:
 	ret
 endp CheckForLeftSideBlackFirstPlayer
 
+;=======================================================================================================
+;====CheckForRightSideBlack- Checks if the right side of a given car has hit black (not leagal)=========
+;=======================================================================================================
 proc CheckForRightSideBlack near
 	push ax
 	push bx
@@ -1517,129 +1599,6 @@ proc CheckForRightSideBlack near
 	ret
 endp CheckForRightSideBlack
 
-;=========================================================
-;====MoveFirstPlayerCar- move car for first player========
-;=========================================================
-proc MoveFirstPlayerCar near
-	push ax
-	push bx
-	push cx
-	push dx
-	push si
-	push di
-
-	mov di, [FirstPlayerLocation]
-
-	mov si, di
-
-	;mov ah, 0
-	;int 16h
-
-	;jz exitMovePlayerOne
-
-
-	;mov ah, 1
-	;int 16h
-;	mov ah, 1
-;	int 16h
-
-	cmp ah, 11h
-	jne NotFirstPlayerW
-	sub di, 320 * 5
-	jmp ContinueMoveFirstCar
-
-NotFirstPlayerW:
-	cmp ah, 1Fh
-	jne NotFirstPlayerS
-	add di, 320 * 5
-	jmp ContinueMoveFirstCar
-
-NotFirstPlayerS:
-	cmp ah, 1Eh
-	jne NotFirstPlayerA
-	sub di, 5
-	call CheckForLeftSideBlackFirstPlayer
-	cmp [DidPlayerWin], 0
-	jne Player1HitRed
-
-	jmp ContinueMoveFirstCar
-
-NotFirstPlayerA:
-	cmp ah, 20h
-	jne ExitMovePlayerOne
-	add di, 5
-	call CheckForRightSideBlack
-	je Player1HitRed
-
-ContinueMoveFirstCar:
-;check if top left hit red-
-	mov ax, di
-	mov bx, 320
-	xor dx, dx
-	div bx
-	
-	mov cx, dx
-	mov dx,ax
-	mov ah, 0Dh
-	int 10h
-	cmp al, 01H
-	je Player1HitRed
-;	cmp al, 00H
-;	je PlayerOneWon
-
-;check if bottom right hit red-
-	add cx,17
-	add dx,12
-	mov ah, 0Dh
-	int 10h
-	cmp al, 01H
-	je Player1HitRed
-
-;	cmp al, 00H
-;	je Player1HitRed
-
-;check if top right hit red-
-	sub dx, 12
-	mov ah, 0Dh
-	int 10h
-	cmp al, 01H
-	je Player1HitRed
-
-;check if bottom left hit red-
-	add dx, 12
-	sub cx, 17
-	mov ah, 0Dh
-	int 10h
-	cmp al, 01H
-	je Player1HitRed
-
-	push di
-	mov di, [SecondPlayerLocation]
-	call ShowSecondPlayerCar
-	pop di
-	mov [PlayerNewLocation], si
-	call ShowBlankCar
-	call ShowFirstPlayerCar
-	jmp exitMovePlayerOne
-
-;PlayerOneWon:
-;	mov [DidPlayerWin], 1
-
-Player1HitRed:
-	mov di, si
-
-exitMovePlayerOne:
-	mov [FirstPlayerLocation], di
-
-	pop di
-	pop si
-	pop dx
-	pop cx
-	pop bx
-	pop ax
-
-	ret
-endp MoveFirstPlayerCar
 
 ;================================================================
 ;====ShowBlankCar- shows red car for second player========
@@ -1666,53 +1625,9 @@ proc ShowBlankCar near
 	ret
 endp ShowBlankCar
 
-;================================================================
-;====ShowSecondPlayerCar- shows red car for second player========
-;================================================================
-proc ShowSecondPlayerCar near
-	push cx
-	push dx	
-	push di
-
-	lea cx, [SecondPlayerCar]
-	mov [matrix], cx
-	  
-	mov dx, 18   ; cols
-	mov cx, 13  ;rows
-	 
-	call PutMatrixInScreen
-
-	pop di
-	pop dx
-	pop cx
-
-	ret
-endp ShowSecondPlayerCar
 
 
 
-;================================================================
-;====ShowFirstPlayerCar- shows blue car for first player=========
-;================================================================
-proc ShowFirstPlayerCar near
-	push cx
-	push dx	
-	push di
-
-	lea cx, [FirstPlayerCar]
-	mov [matrix], cx
-	  
-	mov dx, 18   ; cols
-	mov cx, 13  ;rows
-	 
-	call PutMatrixInScreen
-
-	pop di
-	pop dx
-	pop cx
-
-	ret
-endp ShowFirstPlayerCar
 
 
 
@@ -1877,13 +1792,6 @@ endp DrawVerticalLine
 
 
    
-proc  SetGraphic
-	mov ax,13h   ; 320 X 200 
-				 ;Mode 13h is an IBM VGA BIOS mode. It is the specific standard 256-color mode 
-	int 10h
-	ret
-endp 	SetGraphic
-
  
 
 
