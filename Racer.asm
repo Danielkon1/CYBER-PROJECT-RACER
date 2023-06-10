@@ -233,10 +233,10 @@ exit:
 ;====Game- contains whole game==========
 ;=======================================
 proc Game near
+	call SetGraphic
 BeginGame:
 	call RestartGame
 
-	call SetGraphic
 	call ShowMainIntro
 	cmp [ErrorFile],1
 	jne cont1
@@ -244,7 +244,9 @@ BeginGame:
 
 cont1:
 	call ShowContinueNotificationToNames
-	call WaitForNamesButtonToBePressed
+
+	xor ah, ah
+	int 16h
 
 	call ShowPlayersNamesScreen
 	cmp [ErrorFile],1
@@ -445,20 +447,6 @@ proc ShowContinueNotificationToNames near
 
 	ret
 endp ShowContinueNotificationToNames
-
-;=======================================================================
-;====WaitForNamesButtonToBePressed- waits for any button to be pressed=======
-;=======================================================================
-proc WaitForNamesButtonToBePressed near
-	push ax
-
-	xor ah, ah
-	int 16h
-
-	pop ax
-
-	ret
-endp WaitForNamesButtonToBePressed
 
 ;========================================================================
 ;====ShowPlayersNamesScreen- shows the screen for player's names=========
