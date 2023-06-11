@@ -213,7 +213,7 @@ start:
 
 exit:
 	
-	mov ax,2
+	mov ax, 2
 	int 10h
 	
 	
