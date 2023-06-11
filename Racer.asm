@@ -209,7 +209,6 @@ CODESEG
 start:
 	mov ax, @data
 	mov ds, ax
-
 	call Game
 
 exit:
@@ -220,7 +219,11 @@ exit:
 	
 	mov ax, 4c00h
 	int 21h
-	
+
+
+
+
+
 
 
 ;==========================
