@@ -14,7 +14,6 @@ END_ROAD_NAME equ 'pictures/endroad.bmp'
 WINNER_SCREEN_NAME equ 'pictures/winner.bmp'
 EXIT_BUTTON_NAME equ 'pictures/exit.bmp'
 AGAIN_BUTTON_NAME equ 'pictures/again.bmp'
-LOGGING_NAME equ 'log.txt'
 LOGS_DIRECTORY equ 'logs/'
 
 
